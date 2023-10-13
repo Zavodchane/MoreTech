@@ -1,32 +1,50 @@
 package ru.zavodchane.moretech
 
 import android.os.Bundle
-import android.view.ViewGroup
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.AndroidView
+import org.osmdroid.config.Configuration
+import org.osmdroid.views.MapView
+import ru.zavodchane.moretech.presentation.VTBBranchDisplayApp
 import ru.zavodchane.moretech.ui.theme.MoreTechTheme
+
+lateinit var OSMMapView : MapView
+lateinit var permissionContract : ActivityResultLauncher<Array<String>>
 
 class MainActivity : ComponentActivity() {
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
+
+      permissionContract = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions() )
+      { Toast.makeText(this, "Permissions", Toast.LENGTH_LONG).show() }
+
+      Configuration.getInstance().userAgentValue = packageName
+      OSMMapView = MapView(this)
+
       setContent {
          MoreTechTheme {
-            // A surface container using the 'background' color from the theme
             Surface(
                modifier = Modifier.fillMaxSize(),
                color = MaterialTheme.colorScheme.background
-            ) {  }
+            ) { VTBBranchDisplayApp(mv = OSMMapView) }
          }
       }
+   }
+
+   override fun onResume() {
+      super.onResume()
+      OSMMapView.onResume()
+   }
+
+   override fun onPause() {
+      super.onPause()
+      OSMMapView.onPause()
    }
 }
