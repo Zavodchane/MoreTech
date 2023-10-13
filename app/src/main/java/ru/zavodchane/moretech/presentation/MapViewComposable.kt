@@ -7,11 +7,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
-import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import ru.zavodchane.moretech.R
@@ -36,23 +34,21 @@ fun MapViewComposable( places : List<VTBBuilding>, mv : MapView ) {
    LaunchedEffect(
       key1 = Unit,
       block = {
-         val mapEventsOverlay = MapEventsOverlay(
-            object : MapEventsReceiver {
-               override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
-                  return true
-               }
-
-               override fun longPressHelper(p: GeoPoint?): Boolean { return false }
-            }
-         )
+//         val mapEventsOverlay = MapEventsOverlay(
+//            object : MapEventsReceiver {
+//               override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
+//                  return true
+//               }
+//
+//               override fun longPressHelper(p: GeoPoint?): Boolean { return false }
+//            }
+//         )
 
          mv.apply {
             controller.zoomTo(6, 1000L)
             setMapConfig()
 
-            for (place in places) {
-               addMarker(place)
-            }
+            for (place in places) { addMarker(place) }
          }
       }
    )
