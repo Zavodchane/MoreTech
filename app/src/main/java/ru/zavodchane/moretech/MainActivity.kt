@@ -6,17 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.views.MapView
 import ru.zavodchane.moretech.presentation.VTBBranchDisplayApp
 import ru.zavodchane.moretech.presentation.map.clustering.setupATMMarkerClusterer
 import ru.zavodchane.moretech.presentation.map.clustering.setupBuildingMarkerClusterer
 import ru.zavodchane.moretech.presentation.map.mapview.setupMapView
-import ru.zavodchane.moretech.ui.theme.MoreTechTheme
 
 lateinit var OSMMapView : MapView
 lateinit var permissionContract : ActivityResultLauncher<Array<String>>
@@ -34,14 +29,7 @@ class MainActivity : ComponentActivity() {
       setupBuildingMarkerClusterer(this)
       setupATMMarkerClusterer(this)
 
-      setContent {
-         MoreTechTheme {
-            Surface(
-               modifier = Modifier.fillMaxSize(),
-               color = MaterialTheme.colorScheme.background
-            ) { VTBBranchDisplayApp(mv = OSMMapView) }
-         }
-      }
+      setContent { VTBBranchDisplayApp(mv = OSMMapView) }
    }
 
    override fun onResume() {
