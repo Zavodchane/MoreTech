@@ -1,0 +1,20 @@
+package ru.zavodchane.moretech.data
+
+data class VTBBuilding(
+   val salePointName       : String,                     // Наименование
+   val address             : String,                     // Адрес
+   val status              : String,                     // Статус (открыт/закрыт)
+   val openHours           : List<Pair<String, String>>, // Часы работы юр. лица
+   val rko                 : String,                     // Наличие РКО
+   val openHoursIndividual : List<Pair<String, String>>, // Часы работы физ. лица
+   val officeType          : String,                     // Открытый тип офиса (???)
+   val salePointFormat     : String,                     // Формат
+   val suoAvailability     : String,                     // Наличие СУО
+   val hasRamp             : String,                     // Есть пандус или нет (оборудован для инвалидов или нет)
+   val latitude            : Float,
+   val longitude           : Float,
+   val metroStation        : List<String>?,              // Станции метро (при наличии)
+   val distance            : Int,                        // Дистанция (???)
+   val kep                 : Boolean?,                   // Признак выдачи КЭП
+   val myBranch            : Boolean                     // Признак "Мое отделение"
+)
