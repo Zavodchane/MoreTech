@@ -67,5 +67,8 @@ dependencies {
    debugImplementation("androidx.compose.ui:ui-tooling")
    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+   implementation("androidx.compose.material3:material3-android:1.2.0-alpha09")
+
    implementation("org.osmdroid:osmdroid-android:6.1.13")
+   implementation("com.github.MKergall:osmbonuspack:6.9.0")
 }
