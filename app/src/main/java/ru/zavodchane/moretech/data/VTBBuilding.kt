@@ -48,6 +48,15 @@ data class VTBBuilding(
    }
 
    private fun isMatchingFilters(filters: ClientFilters) : Boolean {
+      Log.i("Filters", "${filters.hasRamp}")
+      Log.i("FiltersCounterpart", "${this.hasRamp}")
+      if (filters.rko)                          { if (!rko) return false }
+      if (filters.hasRamp)                      { if (!hasRamp) return false }
+      if (filters.depositBoxes)                 { if (!deposit_boxes) return false }
+      if (filters.depositInRubles)              { if (!deposit_in_rubles) return false }
+      if (filters.depositInForeignCurrency)     { if (!deposit_in_foreign_currency) return false }
+      if (filters.depositInPreciousMetals)      { if (!deposits_in_precious_metals) return false }
+      if (filters.operationsWithPreciousMetals) { if (!operations_with_precious_metals) return false }
       return true
    }
 }
