@@ -8,6 +8,7 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,6 +22,7 @@ import ru.zavodchane.moretech.data.atmMockList
 import ru.zavodchane.moretech.data.buildingMockList
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.BranchesInfoContent
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.Filters
+import ru.zavodchane.moretech.presentation.bottomsheetcontent.FiltersList
 import ru.zavodchane.moretech.presentation.map.MapViewComposable
 import ru.zavodchane.moretech.ui.theme.MoreTechTheme
 
@@ -43,13 +45,14 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                verticalArrangement = Arrangement.Top,
                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+               val currentClientTypeState = vm.clientType.collectAsState()
                /*BranchesInfoContent(
                   buildings = buildingMockList,
                   onBuildingCardClick = vm::animateToLocation,
                   changeHeightOnCardClick = { bottomSheetHeight = screenHeight - screenHeight / 9 },
                   onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 }
                )*/
-               Filters()
+               FiltersList(onClientTypeChange = vm::changeClientType, currentClientType = currentClientTypeState.value)
             }
          }
       ) { MapViewComposable(buildings = buildingMockList, atms = atmMockList, mv = mv) }
