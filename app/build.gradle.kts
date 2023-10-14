@@ -66,7 +66,13 @@ dependencies {
    debugImplementation("androidx.compose.ui:ui-tooling")
    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+   implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+
    implementation("androidx.compose.material3:material3-android:1.2.0-alpha09")
+
+   implementation("com.google.accompanist:accompanist-permissions:0.28.0")
+
+   implementation("com.google.android.gms:play-services-location:21.0.1")
 
    implementation("org.osmdroid:osmdroid-android:6.1.13")
    implementation("com.github.MKergall:osmbonuspack:6.9.0")
