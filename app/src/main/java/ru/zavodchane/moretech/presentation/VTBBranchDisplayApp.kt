@@ -33,12 +33,8 @@ fun VTBBranchDisplayApp( mv : MapView ) {
                modifier = Modifier.height(screenHeight / 2).fillMaxWidth(),
                verticalArrangement = Arrangement.Center,
                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-               Text("Test Content!")
-            }
+            ) { Text("Test Content!") }
          }
-      ) {
-         MapViewComposable(buildings = buildingMockList, atms = atmMockList, mv = mv)
-      }
+      ) { MapViewComposable(buildings = buildingMockList, atms = atmMockList, mv = mv) }
    }
 }
