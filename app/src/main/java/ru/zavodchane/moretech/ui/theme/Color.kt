@@ -11,6 +11,7 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val Pantone228C   = Color(0xFF002882)
+val defaultVTBcolor  = Color(0xFF004EFF)
 val Pantone228C80 = Color(0xFF33539B)
 val Pantone228C60 = Color(0xFF667EB4)
 val Pantone228C40 = Color(0xFF99A9CD)
