@@ -15,7 +15,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -24,34 +27,56 @@ import ru.zavodchane.moretech.data.VTBBuilding
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 
 @Composable
-fun BranchesInfoContent(buildings : List<VTBBuilding>, onBuildingCardClick : (GeoPoint) -> Unit) {
+fun BranchesInfoContent(
+   buildings : List<VTBBuilding>,
+   onBuildingCardClick : (GeoPoint) -> Unit,
+   changeHeightOnCardClick : () -> Unit
+) {
+   var displayBuildingInfo by remember { mutableStateOf(false) }
+   var displayedBuilding   by remember { mutableStateOf<VTBBuilding?>(null)}
+
    LazyColumn(modifier = Modifier.fillMaxSize()) {
-      items(buildings) { building ->
-         val interactionSource = remember { MutableInteractionSource() }
-         Card(
-            modifier = Modifier
-               .fillMaxWidth()
-               .padding(5.dp)
-               .clickable(interactionSource, null) {
-                  onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
-               },
-            shape = RoundedCornerShape(5.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
-         ) {
-            Row(
-               modifier = Modifier.background(defaultVTBColor)
+      if (!displayBuildingInfo) {
+         items(buildings) { building ->
+            val interactionSource = remember { MutableInteractionSource() }
+            Card(
+               modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(5.dp)
+                  .clickable(interactionSource, null) {
+                     onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
+                  },
+               shape = RoundedCornerShape(5.dp),
+               colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
-               Text(
-                  text = building.address,
-                  color = Color.White
-               )
-            }
-            Column {
-               Text(text = building.address)
-               Text(text = building.status)
-               if (building.metroStation != null) {
-                  Text(text = building.metroStation.joinToString(separator = ", "))
+               Row(
+                  modifier = Modifier.background(defaultVTBColor)
+               ) {
+                  Text(
+                     text = building.address,
+                     color = Color.White
+                  )
                }
+               Column(
+                  modifier = Modifier.clickable(interactionSource, null) {
+                     changeHeightOnCardClick()
+                     displayBuildingInfo = true
+                     displayedBuilding = building
+                  }
+               ) {
+                  Text(text = building.address)
+                  Text(text = building.status)
+                  if (building.metroStation != null) {
+                     Text(text = building.metroStation.joinToString(separator = ", "))
+                  }
+               }
+            }
+         }
+      } else {
+         item {
+            if (displayedBuilding != null) {
+               Text(text = displayedBuilding!!.address)
+               // TODO: Инфа об отделении
             }
          }
       }
