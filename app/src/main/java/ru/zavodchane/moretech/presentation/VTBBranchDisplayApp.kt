@@ -47,6 +47,9 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
       val configuration = LocalConfiguration.current
       val screenHeight = configuration.screenHeightDp.dp
       var bottomSheetHeight by remember { mutableStateOf(screenHeight / 2) }
+      val currentClientTypeState = vm.clientType.collectAsState()
+      val currentClientFiltersState = vm.clientFilters.collectAsState()
+
       val sheetPeekHeight = 50.dp
       BottomSheetScaffold(
          sheetPeekHeight = sheetPeekHeight,
@@ -63,7 +66,10 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                   buildings = buildingMockList,
                   onBuildingCardClick = vm::animateToLocation,
                   changeHeightOnCardClick = { bottomSheetHeight = screenHeight - screenHeight / 9 },
-                  onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 }
+                  onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 },
+                  onClientTypeChange = vm::changeClientType,
+                  currentClientType = currentClientTypeState.value,
+                  currentClientFilters = currentClientFiltersState.value
                )
             }
          }

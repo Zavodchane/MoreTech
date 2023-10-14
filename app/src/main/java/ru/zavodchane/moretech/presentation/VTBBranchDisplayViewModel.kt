@@ -10,7 +10,7 @@ import ru.zavodchane.moretech.OSMMapView
 import ru.zavodchane.moretech.currentLocationFlow
 import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
-import ru.zavodchane.moretech.data.FilterCheckBoxTypes
+import ru.zavodchane.moretech.data.FilterCheckboxTypes
 
 class VTBBranchDisplayViewModel () : ViewModel() {
    private val _currentLocation = currentLocationFlow
@@ -32,17 +32,18 @@ class VTBBranchDisplayViewModel () : ViewModel() {
       Log.i("MapAnimation", "Animating to ${point.latitude} -- ${point.longitude}")
    }
 
-   fun updateFilter(filterType : FilterCheckBoxTypes, value : Boolean) {
+   fun updateFilter(filterType : FilterCheckboxTypes, value : Boolean) {
       _clientFilters.update { filters ->
          when(filterType) {
-            FilterCheckBoxTypes.RKO -> filters.copy(rko = value)
-            FilterCheckBoxTypes.HAS_RAMP -> filters.copy(hasRamp = value)
-            FilterCheckBoxTypes.DEPOSIT_BOXES -> filters.copy(depositBoxes = value)
-            FilterCheckBoxTypes.DEPOSIT_IN_RUBLES -> filters.copy(depositInRubles = value)
-            FilterCheckBoxTypes.DEPOSIT_IN_FOREIGN_CURRENCY -> filters.copy(depositInForeignCurrency = value)
-            FilterCheckBoxTypes.DEPOSIT_IN_PRECIOUS_METALS -> filters.copy(depositInPreciousMetals = value)
-            FilterCheckBoxTypes.OPERATIONS_WITH_PRECIOUS_METALS -> filters.copy(operationsWithPreciousMetals = value)
+            FilterCheckboxTypes.RKO -> filters.copy(rko = value)
+            FilterCheckboxTypes.HAS_RAMP -> filters.copy(hasRamp = value)
+            FilterCheckboxTypes.DEPOSIT_BOXES -> filters.copy(depositBoxes = value)
+            FilterCheckboxTypes.DEPOSIT_IN_RUBLES -> filters.copy(depositInRubles = value)
+            FilterCheckboxTypes.DEPOSIT_IN_FOREIGN_CURRENCY -> filters.copy(depositInForeignCurrency = value)
+            FilterCheckboxTypes.DEPOSIT_IN_PRECIOUS_METALS -> filters.copy(depositInPreciousMetals = value)
+            FilterCheckboxTypes.OPERATIONS_WITH_PRECIOUS_METALS -> filters.copy(operationsWithPreciousMetals = value)
          }
       }
+      Log.i("FilterState", "${clientFilters.value}")
    }
 }

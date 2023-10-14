@@ -1,6 +1,6 @@
 package ru.zavodchane.moretech.data
 
-enum class FilterCheckBoxTypes {
+enum class FilterCheckboxTypes {
    RKO,
    HAS_RAMP,
    DEPOSIT_BOXES,

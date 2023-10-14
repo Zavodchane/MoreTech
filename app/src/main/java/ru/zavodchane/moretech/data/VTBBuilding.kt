@@ -4,7 +4,7 @@ data class VTBBuilding(
    val salePointName       : String,                     // Наименование
    val address             : String,                     // Адрес
    val status              : String,                     // Статус (открыт/закрыт)
-   val openHours           : List<Map<String, String>>,  // Часы работы юр. лица
+   val openHours           : List<Map<String, String?>>,  // Часы работы юр. лица
    val rko                 : String,                     // Наличие РКО
    val openHoursIndividual : List<Map<String, String>>,  // Часы работы физ. лица
    val officeType          : String,                     // Открытый тип офиса (???)
@@ -19,7 +19,7 @@ data class VTBBuilding(
    val myBranch            : Boolean,                    // Признак "Мое отделение"
    var load                : Float = 0f
 ) {
-   fun isMatchingSearchQuery(query: String) : Boolean {
+   fun isMatchingSearchQuery(query: String, filters: ClientFilters) : Boolean {
       val queryList = query.split(" ")
       var newRegex = ""
       queryList.forEach {
@@ -29,5 +29,9 @@ data class VTBBuilding(
       val regexPattern = "^$newRegex.*$".toRegex(setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE, RegexOption.DOT_MATCHES_ALL, RegexOption.UNIX_LINES))
       val branchParamsString = "$salePointName + $address + $metroStation"
       return regexPattern.containsMatchIn(branchParamsString)
+   }
+
+   private fun isMatchingFilters(filters: ClientFilters) : Boolean {
+      return true
    }
 }

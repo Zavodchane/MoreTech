@@ -22,7 +22,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +33,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import org.osmdroid.util.GeoPoint
+import ru.zavodchane.moretech.data.ClientFilters
+import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.VTBBuilding
+import ru.zavodchane.moretech.presentation.map.filtering.FiltersGrouped
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 
 @Composable
@@ -42,7 +44,10 @@ fun BranchesInfoContent(
    buildings : List<VTBBuilding>,
    onBuildingCardClick : (GeoPoint) -> Unit,
    changeHeightOnCardClick : () -> Unit,
-   onBuildingInfoDismiss : () -> Unit
+   onBuildingInfoDismiss : () -> Unit,
+   onClientTypeChange : (ClientType) -> Unit,
+   currentClientType : ClientType,
+   currentClientFilters: ClientFilters
 ) {
    var displayBuildingInfo by remember { mutableStateOf(false) }
    var displayedBuilding   by remember { mutableStateOf<VTBBuilding?>(null)}
@@ -52,20 +57,28 @@ fun BranchesInfoContent(
 
    val focusManager = LocalFocusManager.current
 
-   LazyColumn(modifier = Modifier.fillMaxSize()) {
+   LazyColumn(
+      modifier = Modifier
+         .fillMaxSize()
+         .padding(horizontal = 10.dp)
+   ) {
       if (!displayBuildingInfo) {
          item {
             BasicTextField(
                modifier = Modifier
                   .fillMaxWidth()
-                  .padding(horizontal = 10.dp, vertical = 5.dp)
+                  .padding(vertical = 5.dp)
                   .background(Color.Gray, RoundedCornerShape(10.dp))
                   .padding(10.dp),
                value = query,
-               onValueChange = { query = it; queriedList = search(query, buildings) },
+               onValueChange = { query = it; queriedList = search(query, buildings, currentClientFilters) },
                singleLine = true,
                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                keyboardActions = KeyboardActions( onDone = { focusManager.clearFocus() } )
+            )
+            FiltersGrouped(
+               onClientTypeChange = onClientTypeChange,
+               currentClientType = currentClientType
             )
          }
          items(queriedList) { building ->
@@ -73,7 +86,7 @@ fun BranchesInfoContent(
             Card(
                modifier = Modifier
                   .fillMaxWidth()
-                  .padding(5.dp)
+                  .padding(vertical = 5.dp)
                   .clickable(interactionSource, null) {
                      onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
                   },
@@ -126,6 +139,6 @@ fun BranchesInfoContent(
    }
 }
 
-private fun search(query : String, items : List<VTBBuilding>) : List<VTBBuilding> {
-   return items.filter { building -> building.isMatchingSearchQuery(query) }
+private fun search(query : String, items : List<VTBBuilding>, filters : ClientFilters) : List<VTBBuilding> {
+   return items.filter { building -> building.isMatchingSearchQuery(query, filters) }
 }
