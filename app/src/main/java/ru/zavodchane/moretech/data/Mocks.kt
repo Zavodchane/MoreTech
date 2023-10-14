@@ -166,7 +166,7 @@ val buildingMockList = listOf(
             "hours" to "выходной"
          ),
       ),
-      officeType = "Да (Зона Привилегия)",
+      officeType = "Да",
       salePointFormat = "Универсальный",
       suoAvailability = "Y",
       hasRamp = "N",
