@@ -18,4 +18,16 @@ data class VTBBuilding(
    val kep                 : Boolean?,                   // Признак выдачи КЭП
    val myBranch            : Boolean,                    // Признак "Мое отделение"
    var load                : Float = 0f
-)
+) {
+   fun isMatchingSearchQuery(query: String) : Boolean {
+      val queryList = query.split(" ")
+      var newRegex = ""
+      queryList.forEach {
+         newRegex += "(?=.*\\b${it})"
+      }
+
+      val regexPattern = "^$newRegex.*$".toRegex(setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE, RegexOption.DOT_MATCHES_ALL, RegexOption.UNIX_LINES))
+      val branchParamsString = "$salePointName + $address + $metroStation"
+      return regexPattern.containsMatchIn(branchParamsString)
+   }
+}
