@@ -20,6 +20,7 @@ import org.osmdroid.views.MapView
 import ru.zavodchane.moretech.data.atmMockList
 import ru.zavodchane.moretech.data.buildingMockList
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.BranchesInfoContent
+import ru.zavodchane.moretech.presentation.bottomsheetcontent.Filters
 import ru.zavodchane.moretech.presentation.map.MapViewComposable
 import ru.zavodchane.moretech.ui.theme.MoreTechTheme
 
@@ -42,12 +43,7 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                verticalArrangement = Arrangement.Top,
                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-               BranchesInfoContent(
-                  buildings = buildingMockList,
-                  onBuildingCardClick = vm::animateToLocation,
-                  changeHeightOnCardClick = { bottomSheetHeight = screenHeight - screenHeight / 9 },
-                  onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 }
-               )
+               Filters()
             }
          }
       ) { MapViewComposable(buildings = buildingMockList, atms = atmMockList, mv = mv) }

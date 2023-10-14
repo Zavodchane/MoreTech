@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MoreTech</string>
 
+    <string name="filters_group_name">Фильтры</string>
     <string name="filters_rko">Есть РКО</string>
     <string name="filters_has_ramp">Подходит для инвалидов</string>
     <string name="filters_deposit_boxes">Есть аренда ячеек</string>
@@ -11,4 +12,7 @@
 
     <string name="client_type_physical">Физ. лицо</string>
     <string name="client_type_legal">Юр. лицо</string>
+
+    <string name="content_description_arrow_open">Раскрыть фильры</string>
+    <string name="content_description_arrow_close">Скрыть фильры</string>
 </resources>
