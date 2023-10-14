@@ -59,6 +59,7 @@ fun BranchesInfoContent(
                }
                Column(
                   modifier = Modifier.clickable(interactionSource, null) {
+                     onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
                      changeHeightOnCardClick()
                      displayBuildingInfo = true
                      displayedBuilding = building
