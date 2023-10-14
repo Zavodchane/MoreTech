@@ -45,7 +45,8 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                BranchesInfoContent(
                   buildings = buildingMockList,
                   onBuildingCardClick = vm::animateToLocation,
-                  changeHeightOnCardClick = { bottomSheetHeight = screenHeight }
+                  changeHeightOnCardClick = { bottomSheetHeight = screenHeight },
+                  onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 }
                )
             }
          }

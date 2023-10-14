@@ -30,7 +30,8 @@ import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 fun BranchesInfoContent(
    buildings : List<VTBBuilding>,
    onBuildingCardClick : (GeoPoint) -> Unit,
-   changeHeightOnCardClick : () -> Unit
+   changeHeightOnCardClick : () -> Unit,
+   onBuildingInfoDismiss : () -> Unit
 ) {
    var displayBuildingInfo by remember { mutableStateOf(false) }
    var displayedBuilding   by remember { mutableStateOf<VTBBuilding?>(null)}
