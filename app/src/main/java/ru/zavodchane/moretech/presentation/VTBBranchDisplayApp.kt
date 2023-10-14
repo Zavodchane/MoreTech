@@ -8,6 +8,7 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +21,7 @@ import org.osmdroid.views.MapView
 import ru.zavodchane.moretech.data.atmMockList
 import ru.zavodchane.moretech.data.buildingMockList
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.BranchesInfoContent
+import ru.zavodchane.moretech.presentation.bottomsheetcontent.FiltersList
 import ru.zavodchane.moretech.presentation.map.MapViewComposable
 import ru.zavodchane.moretech.ui.theme.MoreTechTheme
 
@@ -31,6 +33,7 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
       val configuration = LocalConfiguration.current
       val screenHeight = configuration.screenHeightDp.dp
       var bottomSheetHeight by remember { mutableStateOf(screenHeight / 2) }
+      val currentClientType = vm.clientType.collectAsState()
       BottomSheetScaffold(
          sheetPeekHeight = 50.dp,
          scaffoldState = bottomSheetScaffoldState,
@@ -42,12 +45,13 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                verticalArrangement = Arrangement.Top,
                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-               BranchesInfoContent(
-                  buildings = buildingMockList,
-                  onBuildingCardClick = vm::animateToLocation,
-                  changeHeightOnCardClick = { bottomSheetHeight = screenHeight - screenHeight / 9 },
-                  onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 }
-               )
+               FiltersList(onClientTypeChange = vm::changeClientType, currentClientType = currentClientType.value)
+//               BranchesInfoContent(
+//                  buildings = buildingMockList,
+//                  onBuildingCardClick = vm::animateToLocation,
+//                  changeHeightOnCardClick = { bottomSheetHeight = screenHeight - screenHeight / 9 },
+//                  onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 }
+//               )
             }
          }
       ) { MapViewComposable(buildings = buildingMockList, atms = atmMockList, mv = mv) }
