@@ -25,3 +25,5 @@ val ProcessBlack  = Color(0xFF000000)
 val CoolGrey10    = Color(0xFF58595B)
 val CoolGrey8     = Color(0xFF878787)
 val CoolGrey6     = Color(0xFFC5C7C8)
+
+val defaultVTBColor  = Color(0xFF004EFF)
