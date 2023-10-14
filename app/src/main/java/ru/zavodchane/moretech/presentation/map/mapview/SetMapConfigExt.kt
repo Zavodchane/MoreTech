@@ -21,6 +21,5 @@ fun MapView.setMapConfig() {
 
    overlays.add(buildingRadiusMarkerClusterer)
    overlays.add(atmRadiusMarkerClusterer)
-
    overlays.add(RotationGestureOverlay(this))
 }

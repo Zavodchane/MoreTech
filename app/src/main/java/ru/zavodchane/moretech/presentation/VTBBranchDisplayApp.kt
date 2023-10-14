@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import org.osmdroid.views.MapView
-import ru.zavodchane.moretech.data.atmMockList
 import ru.zavodchane.moretech.data.buildingMockList
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.BranchesInfoContent
 import ru.zavodchane.moretech.presentation.map.MapViewComposable
@@ -50,6 +49,6 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                )
             }
          }
-      ) { MapViewComposable(buildings = buildingMockList, atms = atmMockList, mv = mv) }
+      ) { MapViewComposable(buildings = buildingMockList, atms = listOf() /*atmMockList*/, mv = mv) }
    }
 }

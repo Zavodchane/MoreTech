@@ -9,10 +9,17 @@ import ru.zavodchane.moretech.buildingRadiusMarkerClusterer
 import ru.zavodchane.moretech.data.VTBATM
 import ru.zavodchane.moretech.data.VTBBuilding
 
+fun MapView.addUserMarker(userMarker: Marker) {
+   userMarker.apply {
+      icon = ResourcesCompat.getDrawable(resources, R.drawable.user_map_marker, null)
+   }
+   overlays.add(userMarker)
+}
+
 fun MapView.addMarker(building : VTBBuilding) {
    val buildingMarker = Marker(this)
    val buildingIcon = if (building.officeType.contains("привилегия", ignoreCase = true))
-   { ResourcesCompat.getDrawable(resources, R.drawable.vtb_point_premium, null) } else // TODO: Изменить маркер на привилегию
+   { ResourcesCompat.getDrawable(resources, R.drawable.vtb_point_premium, null) } else
    { ResourcesCompat.getDrawable(resources, R.drawable.vtb_point, null) }
 
    buildingMarker.apply {

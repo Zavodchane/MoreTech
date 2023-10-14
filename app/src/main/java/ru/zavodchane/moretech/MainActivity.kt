@@ -22,18 +22,23 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
+import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
+import ru.zavodchane.moretech.config.LOCATION_RETRIEVAL_INTERVAL
+import ru.zavodchane.moretech.config.RESOLUTION_REQUEST_CODE
 import ru.zavodchane.moretech.presentation.VTBBranchDisplayApp
 import ru.zavodchane.moretech.presentation.VTBBranchDisplayViewModel
 import ru.zavodchane.moretech.presentation.map.clustering.setupATMMarkerClusterer
 import ru.zavodchane.moretech.presentation.map.clustering.setupBuildingMarkerClusterer
-import ru.zavodchane.moretech.presentation.map.mapview.setupMapView
+import ru.zavodchane.moretech.presentation.map.mapview.updateUserLocation
 import ru.zavodchane.moretech.presentation.util.permissions
 
 lateinit var OSMMapView : MapView
 lateinit var buildingRadiusMarkerClusterer: RadiusMarkerClusterer
 lateinit var atmRadiusMarkerClusterer: RadiusMarkerClusterer
 lateinit var fusedLocationClient: FusedLocationProviderClient
+lateinit var userMarker: Marker
 var currentLocationFlow: MutableStateFlow<Location?> = MutableStateFlow(null)
 
 class MainActivity : ComponentActivity() {
@@ -43,25 +48,32 @@ class MainActivity : ComponentActivity() {
 
       fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+      // MapView setup
+      Configuration.getInstance().userAgentValue = packageName
+      OSMMapView = MapView(this)
+
+      // Clusterers setup
+      setupBuildingMarkerClusterer(this)
+      setupATMMarkerClusterer(this)
+
+      // UserMarker init
+      userMarker = Marker(OSMMapView)
+
       val locationPermissionRequest = registerForActivityResult(
          ActivityResultContracts.RequestMultiplePermissions()
       ) { permissions ->
          when {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-               setupLocation()
+               setupLocation(userMarker)
                return@registerForActivityResult
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-               setupLocation()
+               setupLocation(userMarker)
                return@registerForActivityResult
             } else -> { /* TODO */ }
          }
       }
       locationPermissionRequest.launch(permissions())
-
-      setupMapView(this, packageName)
-      setupBuildingMarkerClusterer(this)
-      setupATMMarkerClusterer(this)
 
       setContent {
          val viewModel = viewModel<VTBBranchDisplayViewModel>()
@@ -70,10 +82,10 @@ class MainActivity : ComponentActivity() {
    }
 
    @SuppressLint("MissingPermission") // Запуск функции происходит только после проверки разрешений
-   private fun setupLocation() {
+   private fun setupLocation(userMarker: Marker) {
       val locationRequest = LocationRequest.Builder(
          Priority.PRIORITY_HIGH_ACCURACY,
-         10000
+         LOCATION_RETRIEVAL_INTERVAL
       ).build()
       val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
       val client = LocationServices.getSettingsClient(this)
@@ -86,6 +98,7 @@ class MainActivity : ComponentActivity() {
                locationResult ?: return
                for (location in locationResult.locations) {
                   currentLocationFlow.value = location
+                  OSMMapView.updateUserLocation(userMarker)
                   Log.i("CurrentLocation", "${currentLocationFlow.value?.latitude} -- ${currentLocationFlow.value?.longitude}")
                }
             }
@@ -102,7 +115,7 @@ class MainActivity : ComponentActivity() {
       task.addOnFailureListener { exception ->
          Log.i("LocationSettings", "Not granted! Showing dialog...")
          if (exception is ResolvableApiException){
-            try { exception.startResolutionForResult(this@MainActivity, 0x1)
+            try { exception.startResolutionForResult(this@MainActivity, RESOLUTION_REQUEST_CODE)
             } catch (sendEx: IntentSender.SendIntentException) {/* Ignore the error. */}
          }
       }
