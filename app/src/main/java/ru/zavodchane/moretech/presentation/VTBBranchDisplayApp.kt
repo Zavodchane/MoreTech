@@ -8,27 +8,20 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import org.osmdroid.views.MapView
 import ru.zavodchane.moretech.data.atmMockList
 import ru.zavodchane.moretech.data.buildingMockList
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.BranchesInfoContent
 import ru.zavodchane.moretech.presentation.map.MapViewComposable
-import ru.zavodchane.moretech.presentation.util.permissions
 import ru.zavodchane.moretech.ui.theme.MoreTechTheme
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
-   val permissionState = rememberMultiplePermissionsState(permissions = permissions())
-   if (!permissionState.allPermissionsGranted) { SideEffect { permissionState.launchMultiplePermissionRequest() } }
-
    MoreTechTheme {
       val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
       val configuration = LocalConfiguration.current
