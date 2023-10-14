@@ -103,7 +103,7 @@ val buildingMockList = listOf(
    ),
    VTBBuilding(
       salePointName = "ДО «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
-      address = "141506, Московская область, г. Солнечногорск, ул. Красная, д. 60",
+      address = "129999, г. Москва, г. Московский, ул. Пушкина, д. 99",
       status = "открытая",
       openHours = listOf(
          mapOf(
@@ -172,14 +172,14 @@ val buildingMockList = listOf(
       hasRamp = "N",
       latitude = 55.762398,
       longitude = 37.623951,
-      metroStation = null,
+      metroStation = listOf("Филатов Луг", "Саларьево"),
       distance = 62105,
       kep = true,
       myBranch = false,
    ),
    VTBBuilding(
       salePointName = "ДО «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
-      address = "141506, Московская область, г. Солнечногорск, ул. Красная, д. 60",
+      address = "119602, г. Москва, ул. Олимпийская деревня, д. 28",
       status = "открытая",
       openHours = listOf(
          mapOf(
@@ -248,7 +248,7 @@ val buildingMockList = listOf(
       hasRamp = "N",
       latitude = 55.762272,
       longitude = 37.624821,
-      metroStation = null,
+      metroStation = listOf("Мичуринский проспект", "Озерная"),
       distance = 62105,
       kep = true,
       myBranch = false,

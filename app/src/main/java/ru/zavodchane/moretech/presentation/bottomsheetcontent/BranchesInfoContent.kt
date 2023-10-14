@@ -16,9 +16,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +33,7 @@ import org.osmdroid.util.GeoPoint
 import ru.zavodchane.moretech.data.VTBBuilding
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BranchesInfoContent(
    buildings : List<VTBBuilding>,
@@ -41,9 +44,13 @@ fun BranchesInfoContent(
    var displayBuildingInfo by remember { mutableStateOf(false) }
    var displayedBuilding   by remember { mutableStateOf<VTBBuilding?>(null)}
 
+   var searchQuery by remember { mutableStateOf("") }
+   var searchList by remember { mutableStateOf(buildings)}
+   TextField(value = searchQuery, onValueChange = {searchQuery = it; searchList = search(searchQuery, buildings)})
    LazyColumn(modifier = Modifier.fillMaxSize()) {
       if (!displayBuildingInfo) {
-         items(buildings) { building ->
+         items(searchList) { building ->
+//         items(buildings) { building ->
             val interactionSource = remember { MutableInteractionSource() }
             Card(
                modifier = Modifier
@@ -100,5 +107,11 @@ fun BranchesInfoContent(
             }
          }
       }
+   }
+}
+
+fun search(query : String, searchList: List<VTBBuilding>) : List<VTBBuilding> {
+   return searchList.filter { building ->
+      building.isMatchingSearchQuery(query)
    }
 }
