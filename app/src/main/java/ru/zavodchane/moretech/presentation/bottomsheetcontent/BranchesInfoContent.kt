@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Card
@@ -19,6 +22,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +30,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import org.osmdroid.util.GeoPoint
 import ru.zavodchane.moretech.data.VTBBuilding
@@ -41,9 +47,28 @@ fun BranchesInfoContent(
    var displayBuildingInfo by remember { mutableStateOf(false) }
    var displayedBuilding   by remember { mutableStateOf<VTBBuilding?>(null)}
 
+   var query       by remember { mutableStateOf("") }
+   var queriedList by remember { mutableStateOf(buildings) }
+
+   val focusManager = LocalFocusManager.current
+
    LazyColumn(modifier = Modifier.fillMaxSize()) {
       if (!displayBuildingInfo) {
-         items(buildings) { building ->
+         item {
+            BasicTextField(
+               modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(horizontal = 10.dp, vertical = 5.dp)
+                  .background(Color.Gray, RoundedCornerShape(10.dp))
+                  .padding(10.dp),
+               value = query,
+               onValueChange = { query = it; queriedList = search(query, buildings) },
+               singleLine = true,
+               keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+               keyboardActions = KeyboardActions( onDone = { focusManager.clearFocus() } )
+            )
+         }
+         items(queriedList) { building ->
             val interactionSource = remember { MutableInteractionSource() }
             Card(
                modifier = Modifier
@@ -95,10 +120,12 @@ fun BranchesInfoContent(
                   }
                }
                Text(text = displayedBuilding!!.address)
-
-
             }
          }
       }
    }
+}
+
+private fun search(query : String, items : List<VTBBuilding>) : List<VTBBuilding> {
+   return items.filter { building -> building.isMatchingSearchQuery(query) }
 }
