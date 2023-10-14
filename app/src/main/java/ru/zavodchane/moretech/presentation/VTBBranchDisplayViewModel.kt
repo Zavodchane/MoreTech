@@ -50,6 +50,7 @@ class VTBBranchDisplayViewModel () : ViewModel() {
                FilterCheckboxType.OPERATIONS_WITH_PRECIOUS_METALS -> it.copy(operationsWithPreciousMetals = state)
             }
          }
+         Log.i("CurrentFiltersState", "$physicalClientFiltersState")
       }
    }
 }
