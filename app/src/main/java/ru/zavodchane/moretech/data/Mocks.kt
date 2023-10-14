@@ -102,8 +102,8 @@ val buildingMockList = listOf(
       myBranch = false,
    ),
    VTBBuilding(
-      salePointName = "ДО «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
-      address = "141506, Московская область, г. Солнечногорск, ул. Красная, д. 60",
+      salePointName = "Numb diggers bank",
+      address = "2281337, Москва, г. Москва, ул. Шахтеров, д. 69",
       status = "открытая",
       openHours = listOf(
          mapOf(
