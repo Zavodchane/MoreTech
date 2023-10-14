@@ -13,7 +13,7 @@ fun setupATMMarkerClusterer(ctx : Context) {
    atmRadiusMarkerClusterer.setRadius(40)
    atmRadiusMarkerClusterer.setMaxClusteringZoomLevel(25)
    atmRadiusMarkerClusterer.textPaint.color = Color.BLACK
-   atmRadiusMarkerClusterer.setIcon(BonusPackHelper.getBitmapFromVectorDrawable(ctx, R.drawable.marker_folder))
+   atmRadiusMarkerClusterer.setIcon(BonusPackHelper.getBitmapFromVectorDrawable(ctx, R.drawable.vtb_point_multi))
 }
 
 fun setupBuildingMarkerClusterer(ctx : Context) {
@@ -21,5 +21,5 @@ fun setupBuildingMarkerClusterer(ctx : Context) {
    buildingRadiusMarkerClusterer.setRadius(50)
    buildingRadiusMarkerClusterer.setMaxClusteringZoomLevel(25)
    buildingRadiusMarkerClusterer.textPaint.color = Color.BLACK
-   buildingRadiusMarkerClusterer.setIcon(BonusPackHelper.getBitmapFromVectorDrawable(ctx, R.drawable.marker_folder))
+   buildingRadiusMarkerClusterer.setIcon(BonusPackHelper.getBitmapFromVectorDrawable(ctx, R.drawable.vtb_point_multi))
 }

@@ -11,11 +11,15 @@ import ru.zavodchane.moretech.data.VTBBuilding
 
 fun MapView.addMarker(building : VTBBuilding) {
    val buildingMarker = Marker(this)
+   val buildingIcon = if (building.officeType.contains("привилегия", ignoreCase = true))
+   { ResourcesCompat.getDrawable(resources, R.drawable.vtb_point_premium, null) } else // TODO: Изменить маркер на привилегию
+   { ResourcesCompat.getDrawable(resources, R.drawable.vtb_point, null) }
+
    buildingMarker.apply {
       position = GeoPoint(building.latitude, building.longitude)
-      icon = ResourcesCompat.getDrawable(resources, R.drawable.map_marker, null)
+      icon = buildingIcon
       title = building.salePointName
-      setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+      setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
       this.subDescription = building.address
       this.id = building.salePointName
    }
@@ -28,9 +32,9 @@ fun MapView.addMarker(atm : VTBATM) {
    val atmMarker = Marker(this)
    atmMarker.apply {
       position = GeoPoint(atm.latitude, atm.longitude)
-      icon = ResourcesCompat.getDrawable(resources, R.drawable.atm_marker, null)
+      icon = ResourcesCompat.getDrawable(resources, R.drawable.vtb_atm, null)
       title = atm.address
-      setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+      setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
       this.subDescription = atm.address
       this.id = atm.address
    }
