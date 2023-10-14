@@ -5,8 +5,6 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import ru.zavodchane.moretech.atmRadiusMarkerClusterer
 import ru.zavodchane.moretech.buildingRadiusMarkerClusterer
-import ru.zavodchane.moretech.config.INITIAL_ANIM_SPEED
-import ru.zavodchane.moretech.config.INITIAL_GEO_POINT
 import ru.zavodchane.moretech.config.INITIAL_ZOOM
 
 fun MapView.setMapConfig() {
@@ -15,9 +13,9 @@ fun MapView.setMapConfig() {
    setBuiltInZoomControls(false)
    setMultiTouchControls(true)
 
-   controller.setCenter(INITIAL_GEO_POINT)
+//   controller.setCenter(INITIAL_GEO_POINT)
    controller.setZoom(INITIAL_ZOOM)
-   controller.animateTo(INITIAL_GEO_POINT, INITIAL_ZOOM, INITIAL_ANIM_SPEED)
+//   controller.animateTo(INITIAL_GEO_POINT, INITIAL_ZOOM, INITIAL_ANIM_SPEED)
 
    overlays.add(buildingRadiusMarkerClusterer)
    overlays.add(atmRadiusMarkerClusterer)

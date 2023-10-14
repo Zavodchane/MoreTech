@@ -23,6 +23,7 @@ import com.google.android.gms.location.Priority
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.config.Configuration
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import ru.zavodchane.moretech.config.LOCATION_RETRIEVAL_INTERVAL
@@ -31,6 +32,7 @@ import ru.zavodchane.moretech.presentation.VTBBranchDisplayApp
 import ru.zavodchane.moretech.presentation.VTBBranchDisplayViewModel
 import ru.zavodchane.moretech.presentation.map.clustering.setupATMMarkerClusterer
 import ru.zavodchane.moretech.presentation.map.clustering.setupBuildingMarkerClusterer
+import ru.zavodchane.moretech.presentation.map.mapview.moveMapToUser
 import ru.zavodchane.moretech.presentation.map.mapview.updateUserLocation
 import ru.zavodchane.moretech.presentation.util.permissions
 
@@ -42,6 +44,7 @@ lateinit var userMarker: Marker
 var currentLocationFlow: MutableStateFlow<Location?> = MutableStateFlow(null)
 
 class MainActivity : ComponentActivity() {
+   private var locationInitialized = false
    @SuppressLint("MissingPermission") // Запуск зависимой функции происходит только после проверки разрешений
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
@@ -99,6 +102,11 @@ class MainActivity : ComponentActivity() {
                for (location in locationResult.locations) {
                   currentLocationFlow.value = location
                   OSMMapView.updateUserLocation(userMarker)
+                  if (!locationInitialized) {
+                     val userGeoPoint = GeoPoint(currentLocationFlow.value!!.latitude, currentLocationFlow.value!!.longitude)
+                     OSMMapView.moveMapToUser(userGeoPoint)
+                     locationInitialized = true
+                  }
                   Log.i("CurrentLocation", "${currentLocationFlow.value?.latitude} -- ${currentLocationFlow.value?.longitude}")
                }
             }
