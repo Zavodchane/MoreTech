@@ -11,7 +11,7 @@ import ru.zavodchane.moretech.data.VTBBuilding
 
 fun MapView.addUserMarker(userMarker: Marker) {
    userMarker.apply {
-      icon = ResourcesCompat.getDrawable(resources, R.drawable.vtb_person_marker_alt, null)
+      icon = ResourcesCompat.getDrawable(resources, R.drawable.user_point, null)
       setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
    }
    overlays.add(userMarker)
