@@ -69,7 +69,7 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                   onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 },
                   onClientTypeChange = vm::changeClientType,
                   currentClientType = currentClientTypeState.value,
-                  currentClientFilters = currentClientFiltersState.value
+                  currentClientFilters = currentClientFiltersState
                )
             }
          }

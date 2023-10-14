@@ -32,7 +32,11 @@ import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.ui.theme.Typography
 
 @Composable
-fun FiltersGrouped(onClientTypeChange: (ClientType) -> Unit, currentClientType: ClientType) {
+fun FiltersGrouped(
+   onClientTypeChange : (ClientType) -> Unit,
+   currentClientType : ClientType,
+   onFilterUpdate : () -> Unit
+) {
    var rowSize by remember { mutableStateOf(Size.Zero) }
 
    Column {
@@ -83,6 +87,6 @@ fun FiltersGrouped(onClientTypeChange: (ClientType) -> Unit, currentClientType: 
          )
       }
       Spacer(modifier = Modifier.height(10.dp))
-      Filters()
+      Filters(onFilterUpdate = onFilterUpdate)
    }
 }

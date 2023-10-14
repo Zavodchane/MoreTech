@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,7 +48,7 @@ fun BranchesInfoContent(
    onBuildingInfoDismiss : () -> Unit,
    onClientTypeChange : (ClientType) -> Unit,
    currentClientType : ClientType,
-   currentClientFilters: ClientFilters
+   currentClientFilters: State<ClientFilters>
 ) {
    var displayBuildingInfo by remember { mutableStateOf(false) }
    var displayedBuilding   by remember { mutableStateOf<VTBBuilding?>(null)}
@@ -71,14 +72,15 @@ fun BranchesInfoContent(
                   .background(Color.Gray, RoundedCornerShape(10.dp))
                   .padding(10.dp),
                value = query,
-               onValueChange = { query = it; queriedList = search(query, buildings, currentClientFilters) },
+               onValueChange = { query = it; queriedList = search(query, buildings, currentClientFilters.value) },
                singleLine = true,
                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                keyboardActions = KeyboardActions( onDone = { focusManager.clearFocus() } )
             )
             FiltersGrouped(
                onClientTypeChange = onClientTypeChange,
-               currentClientType = currentClientType
+               currentClientType = currentClientType,
+               onFilterUpdate = { queriedList = search(query, buildings, currentClientFilters.value) }
             )
          }
          items(queriedList) { building ->
@@ -138,6 +140,10 @@ fun BranchesInfoContent(
    }
 }
 
-private fun search(query : String, items : List<VTBBuilding>, filters : ClientFilters) : List<VTBBuilding> {
+private fun search(
+   query : String,
+   items : List<VTBBuilding>,
+   filters : ClientFilters) : List<VTBBuilding>
+{
    return items.filter { building -> building.isMatchingSearchQuery(query, filters) }
 }

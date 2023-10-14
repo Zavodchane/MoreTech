@@ -30,7 +30,7 @@ import ru.zavodchane.moretech.ui.theme.ProcessCyan
 import ru.zavodchane.moretech.ui.theme.ProcessCyan20
 
 @Composable
-fun Filters() {
+fun Filters(onFilterUpdate : () -> Unit) {
    Column(
       modifier = Modifier
          .clip(shape = RoundedCornerShape(10.dp))
@@ -84,6 +84,7 @@ fun Filters() {
                         value = !clientFilters.rko,
                         filterType = FilterCheckboxTypes.RKO
                      )
+                     onFilterUpdate()
                   }
                )
                FilterCheckbox(
@@ -94,6 +95,7 @@ fun Filters() {
                         value = !clientFilters.hasRamp,
                         filterType = FilterCheckboxTypes.HAS_RAMP
                      )
+                     onFilterUpdate()
                   }
                )
                FilterCheckbox(
@@ -104,6 +106,7 @@ fun Filters() {
                         value = !clientFilters.depositBoxes,
                         filterType = FilterCheckboxTypes.DEPOSIT_BOXES
                      )
+                     onFilterUpdate()
                   }
                )
                FilterCheckbox(
@@ -114,6 +117,7 @@ fun Filters() {
                         value = !clientFilters.depositInRubles,
                         filterType = FilterCheckboxTypes.DEPOSIT_IN_RUBLES
                      )
+                     onFilterUpdate()
                   }
                )
                FilterCheckbox(
@@ -124,6 +128,7 @@ fun Filters() {
                         value = !clientFilters.depositInForeignCurrency,
                         filterType = FilterCheckboxTypes.DEPOSIT_IN_FOREIGN_CURRENCY
                      )
+                     onFilterUpdate()
                   }
                )
                FilterCheckbox(
@@ -134,6 +139,7 @@ fun Filters() {
                         value = !clientFilters.depositInPreciousMetals,
                         filterType = FilterCheckboxTypes.DEPOSIT_IN_PRECIOUS_METALS
                      )
+                     onFilterUpdate()
                   }
                )
                FilterCheckbox(
@@ -144,6 +150,7 @@ fun Filters() {
                         value = !clientFilters.operationsWithPreciousMetals,
                         filterType = FilterCheckboxTypes.OPERATIONS_WITH_PRECIOUS_METALS
                      )
+                     onFilterUpdate()
                   }
                )
             }
