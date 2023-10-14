@@ -42,9 +42,9 @@ lateinit var atmRadiusMarkerClusterer: RadiusMarkerClusterer
 lateinit var fusedLocationClient: FusedLocationProviderClient
 lateinit var userMarker: Marker
 var currentLocationFlow: MutableStateFlow<Location?> = MutableStateFlow(null)
+var locationInitialized = false
 
 class MainActivity : ComponentActivity() {
-   private var locationInitialized = false
    @SuppressLint("MissingPermission") // Запуск зависимой функции происходит только после проверки разрешений
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
