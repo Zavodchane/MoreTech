@@ -110,7 +110,6 @@ fun BranchesInfoContent(
                   }
                ) {
                   Text(text = building.address)
-                  Text(text = building.status)
                   if (building.metroStation != null) {
                      Text(text = building.metroStation.joinToString(separator = ", "))
                   }
