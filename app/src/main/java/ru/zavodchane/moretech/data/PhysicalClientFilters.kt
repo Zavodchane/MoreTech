@@ -2,10 +2,10 @@ package ru.zavodchane.moretech.data
 
 data class PhysicalClientFilters(
     val rko: Boolean = false,
-    val hasRamp: Boolean = true,
+    val hasRamp: Boolean = false,
     val depositBoxes: Boolean = false,
-    val depositInRubles: Boolean = true,
-    val depositInForeignCurrency: Boolean = true,
+    val depositInRubles: Boolean = false,
+    val depositInForeignCurrency: Boolean = false,
     val depositInPreciousMetals: Boolean = false,
     val operationsWithPreciousMetals: Boolean = false
 )
