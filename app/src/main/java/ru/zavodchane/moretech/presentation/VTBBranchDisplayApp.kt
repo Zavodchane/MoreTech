@@ -24,7 +24,9 @@ import org.osmdroid.views.MapView
 import ru.zavodchane.moretech.data.atmMockList
 import ru.zavodchane.moretech.data.buildingMockList
 import ru.zavodchane.moretech.presentation.map.MapViewComposable
+import ru.zavodchane.moretech.ui.theme.CoolGrey6
 import ru.zavodchane.moretech.ui.theme.MoreTechTheme
+import ru.zavodchane.moretech.ui.theme.defaultVTBcolor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,12 +36,14 @@ fun VTBBranchDisplayApp( mv : MapView ) {
       val configuration = LocalConfiguration.current
       val screenHeight = configuration.screenHeightDp.dp
       BottomSheetScaffold(
+         sheetContainerColor = Color.White,
          scaffoldState = bottomSheetScaffoldState,
          sheetContent = {
             LazyColumn(
                modifier = Modifier
-                  .height(screenHeight * 2 / 3)
-                  .fillMaxWidth(),
+                  .height(screenHeight / 2)
+                  .fillMaxWidth()
+                  .background(CoolGrey6),
 //               verticalArrangement = Arrangement.SpaceAround,
                horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -51,16 +55,20 @@ fun VTBBranchDisplayApp( mv : MapView ) {
                         .padding(5.dp),
                      shape = RoundedCornerShape(5.dp),
                      elevation = CardDefaults.elevatedCardElevation(5.dp),
-                     colors = CardDefaults.cardColors(containerColor = Color.Cyan)
+                     colors = CardDefaults.cardColors(containerColor = Color.White)
                   ) {
                      Row(
-                        modifier = Modifier.background(Color.Yellow)
+                        modifier = Modifier.background(defaultVTBcolor)
                      ) {
-                        Text(text = it.salePointName)
+                        Text(
+                           text = it.address,
+                           color = Color.White
+                           )
                      }
                      Column() {
                         Text(text = it.address)
                         Text(text = it.status)
+                        Text(text = "Метро .........")
                      }
 
                   }
