@@ -6,7 +6,7 @@ data class VTBBuilding(
    val status              : String,                     // Статус (открыт/закрыт)
    val openHours           : List<Map<String, String>>,  // Часы работы юр. лица
    val rko                 : String,                     // Наличие РКО
-   val openHoursIndividual : List<Map<String, String>>, // Часы работы физ. лица
+   val openHoursIndividual : List<Map<String, String>>,  // Часы работы физ. лица
    val officeType          : String,                     // Открытый тип офиса (???)
    val salePointFormat     : String,                     // Формат
    val suoAvailability     : String,                     // Наличие СУО
@@ -14,7 +14,8 @@ data class VTBBuilding(
    val latitude            : Double,
    val longitude           : Double,
    val metroStation        : List<String>?,              // Станции метро (при наличии)
-   val distance            : Int,                        // Дистанция (???)
+   var distance            : Int = 0,                    // Дистанция до отделения от местоположения пользователя
    val kep                 : Boolean?,                   // Признак выдачи КЭП
-   val myBranch            : Boolean                     // Признак "Мое отделение"
+   val myBranch            : Boolean,                    // Признак "Мое отделение"
+   var load                : Float = 0f
 )
