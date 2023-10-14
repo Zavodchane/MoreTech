@@ -2,13 +2,13 @@
     <string name="app_name">MoreTech</string>
 
     <string name="filters_group_name">Фильтры</string>
-    <string name="filters_rko">Есть РКО</string>
+    <string name="filters_rko">РКО</string>
     <string name="filters_has_ramp">Подходит для инвалидов</string>
-    <string name="filters_deposit_boxes">Есть аренда ячеек</string>
-    <string name="filters_deposit_in_rubles">Есть депозит в рублях</string>
-    <string name="filters_deposit_in_foreign_currency">Есть депозит в валютах</string>
-    <string name="filters_deposit_in_precious_metals">Есть депозит в драг. металлах</string>
-    <string name="filters_operations_with_precious_metals">Есть операции с драг. металлами</string>
+    <string name="filters_deposit_boxes">Аренда ячеек</string>
+    <string name="filters_deposit_in_rubles">Депозит в рублях</string>
+    <string name="filters_deposit_in_foreign_currency">Депозит в валютах</string>
+    <string name="filters_deposit_in_precious_metals">Депозит в драг. металлах</string>
+    <string name="filters_operations_with_precious_metals">Операции с драг. металлами</string>
 
     <string name="client_type_physical">Физ. лицо</string>
     <string name="client_type_legal">Юр. лицо</string>
