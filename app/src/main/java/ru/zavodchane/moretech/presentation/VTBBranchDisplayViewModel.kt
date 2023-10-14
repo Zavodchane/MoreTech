@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.util.Log
-import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -21,9 +19,6 @@ class VTBBranchDisplayViewModel () : ViewModel() {
 
    private val _clientType = MutableStateFlow(ClientType.PHYSICAL_ENTITY)
    val clientType = _clientType.asStateFlow()
-
-   @OptIn(ExperimentalMaterial3Api::class)
-   var scaffoldState : BottomSheetScaffoldState? = null
 
    @SuppressLint("MissingPermission")
    fun getSingleRequestCurrentLocation(ctx : Context) {
