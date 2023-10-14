@@ -107,8 +107,8 @@ val buildingMockList = listOf(
       status = "открытая",
       openHours = listOf(
          mapOf(
-            "days" to "пн",
-            "hours" to "09:00-18:00"
+            "days" to "Не обслуживает ЮЛ",
+            "hours" to null
          ),
          mapOf(
             "days" to "вт",
