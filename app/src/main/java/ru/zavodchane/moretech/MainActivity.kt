@@ -93,7 +93,7 @@ class MainActivity : ComponentActivity() {
 
       setContent {
          val viewModel = viewModel<VTBBranchDisplayViewModel>()
-         VTBBranchDisplayApp(vm = viewModel, mv = OSMMapView)
+         VTBBranchDisplayApp(vm = viewModel)
       }
    }
 

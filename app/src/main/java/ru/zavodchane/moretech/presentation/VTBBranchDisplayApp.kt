@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import kotlinx.coroutines.flow.asStateFlow
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
 import ru.zavodchane.moretech.OSMMapView
 import ru.zavodchane.moretech.R
 import ru.zavodchane.moretech.actualBuildingList
@@ -41,7 +40,7 @@ import ru.zavodchane.moretech.ui.theme.MoreTechTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
+fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel) {
    MoreTechTheme {
       val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
       val configuration = LocalConfiguration.current
@@ -71,7 +70,7 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                   onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 },
                   onClientTypeChange = vm::changeClientType,
                   currentClientType = currentClientTypeState.value,
-                  currentClientFilters = currentClientFiltersState
+                  currentClientFilters = currentClientFiltersState,
                )
             }
          }

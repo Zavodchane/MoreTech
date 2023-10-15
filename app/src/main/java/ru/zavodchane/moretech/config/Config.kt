@@ -12,3 +12,10 @@ const val RESOLUTION_REQUEST_CODE = 0x1
 
 // Constants
 const val AVG_SERVICE_TIME_MINS = 5.5
+
+//val activity = LocalContext.current as Activity
+//val mapsIntent = Intent(
+//   Intent.ACTION_VIEW,
+//   Uri.parse("https://www.google.com/maps/search/?api=1&query=${building.latitude}%2C${building.longitude}")
+//)
+//activity.startActivity(mapsIntent)

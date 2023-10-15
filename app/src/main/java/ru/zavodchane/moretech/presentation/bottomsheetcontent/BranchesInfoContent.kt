@@ -99,9 +99,9 @@ fun BranchesInfoContent(
                         textFieldSize = coordinates.size.toSize()
                      },
                   value = query,
-                  onValueChange = {
-                     query = it;
-                     queriedList = search(query, buildings, currentClientFilters.value)
+                  onValueChange = { queryVal ->
+                     query = queryVal
+                     queriedList = search(query, buildings, currentClientFilters.value).sortedBy { it.getDistanceToUser() }
                      setCurrentlyDisplayedBuildings(queriedList)
                   },
                   singleLine = true,
@@ -126,7 +126,7 @@ fun BranchesInfoContent(
                if (showFiltersDialog) {
                   FiltersDialog(
                      onFilterUpdate = {
-                        queriedList = search(query, buildings, currentClientFilters.value)
+                        queriedList = search(query, buildings, currentClientFilters.value).sortedBy { it.getDistanceToUser() }
                         setCurrentlyDisplayedBuildings(queriedList)
                      },
                      onDismissRequest = {showFiltersDialog = false}
@@ -169,7 +169,6 @@ fun BranchesInfoContent(
                ) {
                   Text(text = building.address)
                   if (building.metroStation != null) {
-//                     Text(text = building.metroStation.joinToString(separator = ", "))
                      Text(text = building.metroStation)
                   }
                }
