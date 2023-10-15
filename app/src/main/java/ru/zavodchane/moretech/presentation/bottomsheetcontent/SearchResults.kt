@@ -21,14 +21,14 @@ import ru.zavodchane.moretech.ui.theme.ProcessCyan
 import ru.zavodchane.moretech.ui.theme.Typography
 
 @Composable
-fun SearchResults() {
+fun SearchResults() { // TODO: Докинь сюда параметр списка с результатом
     LazyColumn(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier
             .padding(dimensionResource(id = R.dimen.padding_medium))
             .fillMaxWidth()
     ) {
-        items(4) {
+        items(4) { // TODO: и этот параметр сюда закинь
             ResultItem(address = "г. Москва, ул. Нижняя Красносельская, д. 45/17", distance = 1220, modifier = Modifier.padding(bottom = dimensionResource(
                 id = R.dimen.padding_small
             )))
