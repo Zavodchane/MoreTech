@@ -55,6 +55,8 @@ import ru.zavodchane.moretech.R
 import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.vtbbuilding.VTBBuilding
+import ru.zavodchane.moretech.presentation.bottomsheetcontent.display.VTBBuildingDisplayCard
+import ru.zavodchane.moretech.presentation.bottomsheetcontent.display.VTBBuildingInfo
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering.FiltersDialog
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 import kotlin.math.roundToInt
@@ -154,108 +156,28 @@ fun BranchesInfoContent(
             .padding(horizontal = 10.dp)
       ) {
          if (!displayBuildingInfo) {
-//            item {
-
-//            FiltersGrouped(
-//               onClientTypeChange = onClientTypeChange,
-//               currentClientType = currentClientType,
-//               onFilterUpdate = { queriedList = search(query, buildings, currentClientFilters.value); setCurrentlyDisplayedBuildings(queriedList) }
-//            )
-//            }
             items(queriedList) { building ->
-               val interactionSource = remember { MutableInteractionSource() }
-               Card(
-                  modifier = Modifier
-                     .fillMaxWidth()
-                     .padding(vertical = 5.dp)
-                     .clickable(interactionSource, null) {
-                        onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
-                     },
-                  shape = RoundedCornerShape(5.dp),
-                  colors = CardDefaults.cardColors(containerColor = Color.White)
-               ) {
-                  Row(
-                     modifier = Modifier
-                        .fillMaxWidth()
-                        .background(defaultVTBColor),
-                     horizontalArrangement = Arrangement.SpaceBetween,
-                     verticalAlignment = Alignment.CenterVertically
-                  ) {
-                     Text(
-                        text = building.address,
-                        color = Color.White,
-                        modifier = Modifier.padding(start = 12.dp)
-                     )
+               VTBBuildingDisplayCard(
+                  building = building,
+                  onBuildingCardClick = onBuildingCardClick,
+                  onInfoDisplay = {
+                     changeHeightOnCardClick()
+                     displayBuildingInfo = true
+                     displayedBuilding = building
                   }
-                  Row {
-                     Column(
-                        modifier = Modifier.clickable(interactionSource, null) {
-                           onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
-                           changeHeightOnCardClick()
-                           displayBuildingInfo = true
-                           displayedBuilding = building
-                        }
-                     ) {
-                        if (building.metroStation != null) {
-                           Row {
-                              Image(
-                                 painter = painterResource(id = R.drawable.metro),
-                                 contentDescription = null,
-                                 modifier = Modifier
-                                    .size(20.dp)
-                              )
-                              Text(
-                                 text = "${building.metroStation}",
-                                 modifier = Modifier.padding(start = 12.dp)
-                              )
-                           }
-
-                        }
-                        Text(
-                           text = "${(building.getActualNormalizedWorkload() * 100).roundToInt()}%",
-                           modifier = Modifier.padding(start = 12.dp)
-                        )
-                     }
-                     Column(
-                        modifier = Modifier
-                           .fillMaxWidth(),
-                        horizontalAlignment = Alignment.End,
-                        verticalArrangement = Arrangement.SpaceBetween
-                     ) {
-                        val activity = LocalContext.current as Activity
-                        Image(
-                           painter = painterResource(id = R.drawable.marshrut),
-                           contentDescription = null,
-                           modifier = Modifier
-                              .size(50.dp)
-                              .clickable {
-                                 val mapsIntent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("https://www.google.com/maps/search/?api=1&query=${building.latitude}%2C${building.longitude}")
-                                 )
-                                 activity.startActivity(mapsIntent)
-                              }
-                        )
-                     }
-                  }
-               }
+               )
             }
          } else {
             item {
                if (displayedBuilding != null) {
-                  Row(
-                     modifier = Modifier.fillMaxWidth(),
-                     horizontalArrangement = Arrangement.End
-                  ) {
-                     IconButton(onClick = {
+                  VTBBuildingInfo(
+                     building = displayedBuilding!!,
+                     onCloseClick = {
                         displayBuildingInfo = false
                         displayedBuilding = null
                         onBuildingInfoDismiss()
-                     }) {
-                        Icon(imageVector = Icons.Rounded.Close, contentDescription = null)
                      }
-                  }
-                  Text(text = displayedBuilding!!.address)
+                  )
                }
             }
          }

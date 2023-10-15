@@ -1,4 +1,4 @@
-package ru.zavodchane.moretech.presentation.map.search
+package ru.zavodchane.moretech.presentation.bottomsheetcontent.search
 
 import androidx.compose.runtime.Composable
 
