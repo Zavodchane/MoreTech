@@ -1,6 +1,7 @@
 package ru.zavodchane.moretech.presentation.bottomsheetcontent
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -56,6 +57,11 @@ fun Filters() {
                 shape = RoundedCornerShape(
                     dimensionResource(id = R.dimen.filter_default_border_corners)
                 )
+            )
+            .border(
+                dimensionResource(id = R.dimen.filter_default_border_width),
+                defaultVTBColor,
+                shape = RoundedCornerShape(dimensionResource(id = R.dimen.filter_default_border_corners))
             )
     ) {
         var isFiltersOpen by remember {
