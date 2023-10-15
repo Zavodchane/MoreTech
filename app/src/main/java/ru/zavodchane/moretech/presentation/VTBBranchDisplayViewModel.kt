@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 import ru.zavodchane.moretech.OSMMapView
 import ru.zavodchane.moretech.actualBuildingList
-import ru.zavodchane.moretech.currentLocationFlow
 import ru.zavodchane.moretech.currentlyDisplayedMarkers
 import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
@@ -18,9 +17,6 @@ import ru.zavodchane.moretech.data.FilterCheckboxTypes
 import ru.zavodchane.moretech.data.vtbbuilding.VTBBuilding
 
 class VTBBranchDisplayViewModel () : ViewModel() {
-   private val _currentLocation = currentLocationFlow
-   val currentLocation = _currentLocation.asStateFlow()
-
    private val _clientType = MutableStateFlow(ClientType.PHYSICAL_ENTITY)
    val clientType = _clientType.asStateFlow()
 

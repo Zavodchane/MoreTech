@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -21,6 +22,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
@@ -37,6 +39,7 @@ import ru.zavodchane.moretech.presentation.map.clustering.setupATMMarkerClustere
 import ru.zavodchane.moretech.presentation.map.clustering.setupBuildingMarkerClusterer
 import ru.zavodchane.moretech.presentation.map.mapview.moveMapToUser
 import ru.zavodchane.moretech.presentation.map.mapview.updateUserLocation
+import ru.zavodchane.moretech.presentation.map.splash.Splash
 import ru.zavodchane.moretech.presentation.util.permissions
 
 lateinit var OSMMapView : MapView
@@ -45,7 +48,7 @@ lateinit var atmRadiusMarkerClusterer: RadiusMarkerClusterer
 lateinit var fusedLocationClient: FusedLocationProviderClient
 lateinit var userMarker: Marker
 var currentLocationFlow: MutableStateFlow<Location?> = MutableStateFlow(null)
-var locationInitialized = false
+var locationInitialized: MutableStateFlow<Boolean> = MutableStateFlow(false)
 var currentlyDisplayedMarkers = arrayListOf<Marker>()
 
 lateinit var actualBuildingList: List<VTBBuilding>
@@ -92,8 +95,13 @@ class MainActivity : ComponentActivity() {
       locationPermissionRequest.launch(permissions())
 
       setContent {
-         val viewModel = viewModel<VTBBranchDisplayViewModel>()
-         VTBBranchDisplayApp(vm = viewModel)
+         val loc = locationInitialized.asStateFlow().collectAsState()
+         if (loc.value) {
+            val viewModel = viewModel<VTBBranchDisplayViewModel>()
+            VTBBranchDisplayApp(vm = viewModel)
+         } else {
+            Splash()
+         }
       }
    }
 
@@ -115,10 +123,10 @@ class MainActivity : ComponentActivity() {
                for (location in locationResult.locations) {
                   currentLocationFlow.value = location
                   OSMMapView.updateUserLocation(userMarker)
-                  if (!locationInitialized) {
+                  if (!locationInitialized.value) {
                      val userGeoPoint = GeoPoint(currentLocationFlow.value!!.latitude, currentLocationFlow.value!!.longitude)
                      OSMMapView.moveMapToUser(userGeoPoint)
-                     locationInitialized = true
+                     locationInitialized.value = true
                   }
                   Log.i("CurrentLocation", "${currentLocationFlow.value?.latitude} -- ${currentLocationFlow.value?.longitude}")
                }

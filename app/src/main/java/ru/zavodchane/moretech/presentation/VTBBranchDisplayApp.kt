@@ -31,11 +31,9 @@ import ru.zavodchane.moretech.OSMMapView
 import ru.zavodchane.moretech.R
 import ru.zavodchane.moretech.actualBuildingList
 import ru.zavodchane.moretech.currentLocationFlow
-import ru.zavodchane.moretech.locationInitialized
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.BranchesInfoContent
 import ru.zavodchane.moretech.presentation.map.MapViewComposable
 import ru.zavodchane.moretech.presentation.map.mapview.moveMapToUser
-import ru.zavodchane.moretech.presentation.map.splash.Splash
 import ru.zavodchane.moretech.ui.theme.MoreTechTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,28 +78,25 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel) {
             val currentUserGeoPoint = currentUserLocationState.value?.let { currentUserLocation ->
                GeoPoint(currentUserLocation.latitude, currentUserLocation.longitude)
             }
-            if (locationInitialized) {
-               val interactionSource = remember { MutableInteractionSource() }
-               Image(
-                  modifier = Modifier
-                     .zIndex(10f)
-                     .align(Alignment.BottomEnd)
-                     .clickable(interactionSource, null) {
-                        if (currentUserGeoPoint != null) {
-                           OSMMapView.moveMapToUser(currentUserGeoPoint)
-                        }
+            val interactionSource = remember { MutableInteractionSource() }
+            Image(
+               modifier = Modifier
+                  .zIndex(10f)
+                  .align(Alignment.BottomEnd)
+                  .clickable(interactionSource, null) {
+                     if (currentUserGeoPoint != null) {
+                        OSMMapView.moveMapToUser(currentUserGeoPoint)
                      }
-                     .padding(bottom = sheetPeekHeight + 10.dp, end = 10.dp),
-                  imageVector = ImageVector.vectorResource(R.drawable.to_user),
-                  contentDescription = null
-               )
-               MapViewComposable(
-                  buildings = currentlyDisplayedBuildingsState.value,
-                  atms = listOf() /*atmMockList*/,
-                  updateMarkers = vm::updateMarkers
-               )
-            }
-            else { Splash() }
+                  }
+                  .padding(bottom = sheetPeekHeight + 10.dp, end = 10.dp),
+               imageVector = ImageVector.vectorResource(R.drawable.to_user),
+               contentDescription = null
+            )
+            MapViewComposable(
+               buildings = currentlyDisplayedBuildingsState.value,
+               atms = listOf() /*atmMockList*/,
+               updateMarkers = vm::updateMarkers
+            )
          }
       }
    }
