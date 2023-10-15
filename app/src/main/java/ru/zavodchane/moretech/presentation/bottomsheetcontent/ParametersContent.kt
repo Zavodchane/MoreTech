@@ -32,7 +32,9 @@ import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.zIndex
 import ru.zavodchane.moretech.R
 import ru.zavodchane.moretech.data.ClientType
+import ru.zavodchane.moretech.ui.theme.Pantone228C20
 import ru.zavodchane.moretech.ui.theme.Typography
+import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 
 @Composable
 fun FiltersList(onClientTypeChange: (ClientType) -> Unit, currentClientType: ClientType) {
@@ -42,11 +44,12 @@ fun FiltersList(onClientTypeChange: (ClientType) -> Unit, currentClientType: Cli
       Row(
          modifier = Modifier
             .fillMaxWidth()
+            .height(30.dp)
             .zIndex(2f)
             .background(Color.Transparent)
             .border(
                dimensionResource(id = R.dimen.filter_default_border_width),
-               Color.Black,
+               defaultVTBColor, //Color.Black
                RoundedCornerShape(dimensionResource(id = R.dimen.filter_default_border_corners))
             )
             .onGloballyPositioned { coordinates -> rowSize = coordinates.size.toSize() },
@@ -60,13 +63,14 @@ fun FiltersList(onClientTypeChange: (ClientType) -> Unit, currentClientType: Cli
                }
                .width(with(LocalDensity.current) { rowSize.width.toDp() / 2 - (2.5).dp })
                .background(
-                  color = if (currentClientType == ClientType.PHYSICAL_ENTITY) Color.LightGray else Color.Transparent,
+                  color = if (currentClientType == ClientType.PHYSICAL_ENTITY) defaultVTBColor else Color.Transparent, // Color.LightGray
                   shape = RoundedCornerShape(dimensionResource(id = R.dimen.filter_default_border_corners))
                )
-               .padding(vertical = (2.5).dp),
+               .padding(vertical = (4.6).dp),
             text = stringResource(id = R.string.client_type_physical),
             textAlign = TextAlign.Center,
-            style = Typography.bodyLarge
+            style = Typography.bodyLarge,
+            color = if (currentClientType == ClientType.LEGAL_ENTITY) Color.Black else Color.White
          )
          Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_small)))
          Text(
@@ -76,13 +80,14 @@ fun FiltersList(onClientTypeChange: (ClientType) -> Unit, currentClientType: Cli
                }
                .width(with(LocalDensity.current) { rowSize.width.toDp() / 2 - (2.5).dp })
                .background(
-                  color = if (currentClientType == ClientType.LEGAL_ENTITY) Color.LightGray else Color.Transparent,
-                  shape = RoundedCornerShape(5.dp)
+                  color = if (currentClientType == ClientType.LEGAL_ENTITY) defaultVTBColor else Color.Transparent, //Color.LightGray
+                  shape = RoundedCornerShape(dimensionResource(id = R.dimen.filter_default_border_corners))
                )
-               .padding(vertical = (2.5).dp),
+               .padding(vertical = (4.6).dp),
             text = stringResource(id = R.string.client_type_legal),
             textAlign = TextAlign.Center,
-            style = Typography.bodyLarge
+            style = Typography.bodyLarge,
+            color = if (currentClientType == ClientType.LEGAL_ENTITY) Color.White else Color.Black
          )
       }
       Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
