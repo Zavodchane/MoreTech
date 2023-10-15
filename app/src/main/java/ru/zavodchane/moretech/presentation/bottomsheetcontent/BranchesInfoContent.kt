@@ -37,7 +37,7 @@ import org.osmdroid.util.GeoPoint
 import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.VTBBuilding
-import ru.zavodchane.moretech.presentation.map.filtering.FiltersGrouped
+import ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering.FiltersGrouped
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 
 @Composable
