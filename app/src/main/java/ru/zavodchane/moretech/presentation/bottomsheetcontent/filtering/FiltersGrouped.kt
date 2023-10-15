@@ -1,4 +1,4 @@
-package ru.zavodchane.moretech.presentation.map.filtering
+package ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,9 +30,14 @@ import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.zIndex
 import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.ui.theme.Typography
+import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 
 @Composable
-fun FiltersGrouped(onClientTypeChange: (ClientType) -> Unit, currentClientType: ClientType) {
+fun FiltersGrouped(
+   onClientTypeChange : (ClientType) -> Unit,
+   currentClientType : ClientType,
+   onFilterUpdate : () -> Unit
+) {
    var rowSize by remember { mutableStateOf(Size.Zero) }
 
    Column {
@@ -43,7 +48,7 @@ fun FiltersGrouped(onClientTypeChange: (ClientType) -> Unit, currentClientType: 
             .background(Color.Transparent)
             .border(
                1.dp,
-               Color.Black,
+               defaultVTBColor,
                RoundedCornerShape(10.dp)
             )
             .onGloballyPositioned { coordinates -> rowSize = coordinates.size.toSize() },
@@ -57,13 +62,14 @@ fun FiltersGrouped(onClientTypeChange: (ClientType) -> Unit, currentClientType: 
                }
                .width(with(LocalDensity.current) { rowSize.width.toDp() / 2 - (2.5).dp })
                .background(
-                  color = if (currentClientType == ClientType.PHYSICAL_ENTITY) Color.LightGray else Color.Transparent,
+                  color = if (currentClientType == ClientType.PHYSICAL_ENTITY) defaultVTBColor else Color.Transparent,
                   shape = RoundedCornerShape(5.dp)
                )
-               .padding(vertical = (2.5).dp),
+               .padding(vertical = 5.dp),
             text = "Физлицо",
             textAlign = TextAlign.Center,
-            style = Typography.bodyLarge
+            style = Typography.bodyLarge,
+            color = if (currentClientType == ClientType.PHYSICAL_ENTITY) Color.White else Color.Black
          )
          Spacer(modifier = Modifier.width(10.dp))
          Text(
@@ -73,16 +79,17 @@ fun FiltersGrouped(onClientTypeChange: (ClientType) -> Unit, currentClientType: 
                }
                .width(with(LocalDensity.current) { rowSize.width.toDp() / 2 - (2.5).dp })
                .background(
-                  color = if (currentClientType == ClientType.LEGAL_ENTITY) Color.LightGray else Color.Transparent,
+                  color = if (currentClientType == ClientType.LEGAL_ENTITY) defaultVTBColor else Color.Transparent,
                   shape = RoundedCornerShape(5.dp)
                )
-               .padding(vertical = (2.5).dp),
+               .padding(vertical = 5.dp),
             text = "Юрлицо",
             textAlign = TextAlign.Center,
-            style = Typography.bodyLarge
+            style = Typography.bodyLarge,
+            color = if (currentClientType == ClientType.LEGAL_ENTITY) Color.White else Color.Black
          )
       }
       Spacer(modifier = Modifier.height(10.dp))
-      Filters()
+      Filters(onFilterUpdate = onFilterUpdate)
    }
 }

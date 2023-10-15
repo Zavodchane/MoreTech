@@ -2,15 +2,20 @@ package ru.zavodchane.moretech.presentation
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 import ru.zavodchane.moretech.OSMMapView
 import ru.zavodchane.moretech.currentLocationFlow
+import ru.zavodchane.moretech.currentlyDisplayedMarkers
 import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.FilterCheckboxTypes
+import ru.zavodchane.moretech.data.VTBBuilding
+import ru.zavodchane.moretech.data.buildingMockList
 
 class VTBBranchDisplayViewModel () : ViewModel() {
    private val _currentLocation = currentLocationFlow
@@ -21,6 +26,9 @@ class VTBBranchDisplayViewModel () : ViewModel() {
 
    private val _clientFilters = MutableStateFlow(ClientFilters())
    val clientFilters = _clientFilters.asStateFlow()
+
+   private val _currentlyDisplayedBuildings = MutableStateFlow(buildingMockList)
+   val currentlyDisplayedBuildings = _currentlyDisplayedBuildings.asStateFlow()
 
    fun changeClientType(ct: ClientType) {
       _clientType.value = ct
@@ -45,5 +53,22 @@ class VTBBranchDisplayViewModel () : ViewModel() {
          }
       }
       Log.i("FilterState", "${clientFilters.value}")
+   }
+
+   fun setCurrentlyDisplayedBuildings(buildings : List<VTBBuilding>) {
+      _currentlyDisplayedBuildings.value = buildings
+   }
+
+   fun updateMarkers(buildings : List<VTBBuilding>) {
+      viewModelScope.launch {
+         OSMMapView.apply {
+            val buildingIds = buildings.map { it.salePointName }
+            for (marker in currentlyDisplayedMarkers) {
+               Log.i("MarkerId", "${marker.id} ${marker.id in buildingIds}}")
+               marker.isEnabled = marker.id in buildingIds
+            }
+            invalidate()
+         }
+      }
    }
 }

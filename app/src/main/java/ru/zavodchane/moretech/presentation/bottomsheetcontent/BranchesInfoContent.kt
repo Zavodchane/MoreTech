@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,18 +37,19 @@ import org.osmdroid.util.GeoPoint
 import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.VTBBuilding
-import ru.zavodchane.moretech.presentation.map.filtering.FiltersGrouped
+import ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering.FiltersGrouped
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 
 @Composable
 fun BranchesInfoContent(
    buildings : List<VTBBuilding>,
+   setCurrentlyDisplayedBuildings : (List<VTBBuilding>) -> Unit,
    onBuildingCardClick : (GeoPoint) -> Unit,
    changeHeightOnCardClick : () -> Unit,
    onBuildingInfoDismiss : () -> Unit,
    onClientTypeChange : (ClientType) -> Unit,
    currentClientType : ClientType,
-   currentClientFilters: ClientFilters
+   currentClientFilters: State<ClientFilters>
 ) {
    var displayBuildingInfo by remember { mutableStateOf(false) }
    var displayedBuilding   by remember { mutableStateOf<VTBBuilding?>(null)}
@@ -71,14 +73,15 @@ fun BranchesInfoContent(
                   .background(Color.Gray, RoundedCornerShape(10.dp))
                   .padding(10.dp),
                value = query,
-               onValueChange = { query = it; queriedList = search(query, buildings, currentClientFilters) },
+               onValueChange = { query = it; queriedList = search(query, buildings, currentClientFilters.value); setCurrentlyDisplayedBuildings(queriedList) },
                singleLine = true,
                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                keyboardActions = KeyboardActions( onDone = { focusManager.clearFocus() } )
             )
             FiltersGrouped(
                onClientTypeChange = onClientTypeChange,
-               currentClientType = currentClientType
+               currentClientType = currentClientType,
+               onFilterUpdate = { queriedList = search(query, buildings, currentClientFilters.value); setCurrentlyDisplayedBuildings(queriedList) }
             )
          }
          items(queriedList) { building ->
@@ -138,6 +141,10 @@ fun BranchesInfoContent(
    }
 }
 
-private fun search(query : String, items : List<VTBBuilding>, filters : ClientFilters) : List<VTBBuilding> {
+private fun search(
+   query : String,
+   items : List<VTBBuilding>,
+   filters : ClientFilters) : List<VTBBuilding>
+{
    return items.filter { building -> building.isMatchingSearchQuery(query, filters) }
 }

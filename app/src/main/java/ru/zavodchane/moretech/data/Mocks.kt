@@ -27,39 +27,14 @@ val atmMockList = listOf(
 val buildingMockList = listOf(
    VTBBuilding(
       salePointName = "ДО «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
-      address = "141506, Московская область, г. Солнечногорск, ул. Красная, д. 60",
-      status = "открытая",
+      address = "г. Москва, ул. Шахтеров, д. 69",
       openHours = listOf(
          mapOf(
-            "days" to "пн",
-            "hours" to "09:00-18:00"
-         ),
-         mapOf(
-            "days" to "вт",
-            "hours" to "09:00-18:00"
-         ),
-         mapOf(
-            "days" to "ср",
-            "hours" to "09:00-18:00"
-         ),
-         mapOf(
-            "days" to "чт",
-            "hours" to "09:00-18:00"
-         ),
-         mapOf(
-            "days" to "пт",
-            "hours" to "09:00-18:00"
-         ),
-         mapOf(
-            "days" to "сб",
-            "hours" to "выходной"
-         ),
-         mapOf(
-            "days" to "вс",
-            "hours" to "выходной"
-         ),
+            "days" to "Не обслуживает ЮЛ",
+            "hours" to null
+         )
       ),
-      rko = "есть РКО",
+      rko = true,
       openHoursIndividual = listOf(
          mapOf(
             "days" to "пн",
@@ -92,23 +67,35 @@ val buildingMockList = listOf(
       ),
       officeType = "Да (Зона Привилегия)",
       salePointFormat = "Универсальный",
-      suoAvailability = "Y",
-      hasRamp = "N",
+      hasRamp = true,
       latitude = 55.762936,
       longitude = 37.628845,
       metroStation = listOf("Юго-западная", "Проспект Вернадского"),
       distance = 62105,
       kep = true,
       myBranch = false,
+      ratings = 4.3f,
+      deposit_boxes = true,
+      biometric_data_collection=false,
+      wifi = true,
+      deposit_in_foreign_currency = true,
+      deposits_in_precious_metals = false,
+      deposit_in_rubles = true,
+      transactions_with_non_cash = false,
+      cash_transactions = true,
+      operations_with_precious_metals = true,
+      workload_online = 0.31f,
+      costumers = 9,
+      workers = 13,
+      koef_avg_time = 5.9f
    ),
    VTBBuilding(
       salePointName = "Numb diggers bank",
-      address = "2281337, Москва, г. Москва, ул. Шахтеров, д. 69",
-      status = "открытая",
+      address = "г. Москва, ул. Шахтеров, д. 69",
       openHours = listOf(
          mapOf(
-            "days" to "Не обслуживает ЮЛ",
-            "hours" to null
+            "days" to "пн",
+            "hours" to "09:00-18:00"
          ),
          mapOf(
             "days" to "вт",
@@ -135,7 +122,7 @@ val buildingMockList = listOf(
             "hours" to "выходной"
          ),
       ),
-      rko = "есть РКО",
+      rko = false,
       openHoursIndividual = listOf(
          mapOf(
             "days" to "пн",
@@ -168,19 +155,31 @@ val buildingMockList = listOf(
       ),
       officeType = "Да",
       salePointFormat = "Универсальный",
-      suoAvailability = "Y",
-      hasRamp = "N",
+      hasRamp = false,
       latitude = 55.762398,
       longitude = 37.623951,
       metroStation = null,
       distance = 62105,
       kep = true,
       myBranch = false,
+      ratings = 4.3f,
+      deposit_boxes = true,
+      biometric_data_collection=false,
+      wifi = true,
+      deposit_in_foreign_currency = true,
+      deposits_in_precious_metals = false,
+      deposit_in_rubles = true,
+      transactions_with_non_cash = false,
+      cash_transactions = true,
+      operations_with_precious_metals = true,
+      workload_online = 0.31f,
+      costumers = 3,
+      workers = 10,
+      koef_avg_time = 1.2f
    ),
    VTBBuilding(
-      salePointName = "ДО «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
-      address = "141506, Московская область, г. Солнечногорск, ул. Красная, д. 60",
-      status = "открытая",
+      salePointName = "xd «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
+      address = "г. Солнечногорск, ул. Красная, д. 60",
       openHours = listOf(
          mapOf(
             "days" to "пн",
@@ -211,7 +210,7 @@ val buildingMockList = listOf(
             "hours" to "выходной"
          ),
       ),
-      rko = "есть РКО",
+      rko = true,
       openHoursIndividual = listOf(
          mapOf(
             "days" to "пн",
@@ -244,13 +243,26 @@ val buildingMockList = listOf(
       ),
       officeType = "Да (Зона Привилегия)",
       salePointFormat = "Универсальный",
-      suoAvailability = "Y",
-      hasRamp = "N",
+      hasRamp = true,
       latitude = 55.762272,
       longitude = 37.624821,
       metroStation = null,
       distance = 62105,
       kep = true,
       myBranch = false,
+      ratings = 4.6f,
+      deposit_boxes = false,
+      biometric_data_collection=false,
+      wifi = true,
+      deposit_in_foreign_currency = true,
+      deposits_in_precious_metals = false,
+      deposit_in_rubles = true,
+      transactions_with_non_cash = false,
+      cash_transactions = true,
+      operations_with_precious_metals = true,
+      workload_online = 0.44f,
+      costumers = 14,
+      workers = 13,
+      koef_avg_time = 5.47f
    )
 )

@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import org.osmdroid.views.MapView
 import ru.zavodchane.moretech.OSMMapView
 import ru.zavodchane.moretech.data.VTBATM
 import ru.zavodchane.moretech.data.VTBBuilding
@@ -16,10 +15,14 @@ import ru.zavodchane.moretech.presentation.map.mapview.setMapConfig
 import ru.zavodchane.moretech.userMarker
 
 @Composable
-fun MapViewComposable(buildings : List<VTBBuilding>, atms : List<VTBATM>, mv : MapView ) {
+fun MapViewComposable(
+   buildings : List<VTBBuilding>,
+   atms : List<VTBATM>,
+   updateMarkers : (List<VTBBuilding>) -> Unit
+) {
    AndroidView (
       modifier = Modifier.fillMaxSize(),
-      factory = { mv }
+      factory = { OSMMapView }
    ) { mapView ->
       mapView.apply { Log.d("ANDROID_MAPVIEW", "Map View recomposition") }
    }
@@ -27,12 +30,13 @@ fun MapViewComposable(buildings : List<VTBBuilding>, atms : List<VTBATM>, mv : M
    LaunchedEffect(
       key1 = Unit,
       block = {
-         mv.apply {
+         OSMMapView.apply {
             setMapConfig()
             for (vtbBuilding in buildings) { addMarker(vtbBuilding) }
-            for (vtbAtm in atms) { addMarker(vtbAtm) }
+//            for (vtbAtm in atms) { addMarker(vtbAtm) }
             OSMMapView.addUserMarker(userMarker)
          }
       }
    )
+   updateMarkers(buildings)
 }

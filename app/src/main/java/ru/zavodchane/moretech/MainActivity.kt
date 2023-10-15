@@ -43,6 +43,7 @@ lateinit var fusedLocationClient: FusedLocationProviderClient
 lateinit var userMarker: Marker
 var currentLocationFlow: MutableStateFlow<Location?> = MutableStateFlow(null)
 var locationInitialized = false
+var currentlyDisplayedMarkers = arrayListOf<Marker>()
 
 class MainActivity : ComponentActivity() {
    @SuppressLint("MissingPermission") // Запуск зависимой функции происходит только после проверки разрешений

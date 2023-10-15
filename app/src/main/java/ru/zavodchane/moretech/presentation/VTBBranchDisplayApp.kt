@@ -49,6 +49,7 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
       var bottomSheetHeight by remember { mutableStateOf(screenHeight / 2) }
       val currentClientTypeState = vm.clientType.collectAsState()
       val currentClientFiltersState = vm.clientFilters.collectAsState()
+      val currentlyDisplayedBuildingsState = vm.currentlyDisplayedBuildings.collectAsState()
 
       val sheetPeekHeight = 50.dp
       BottomSheetScaffold(
@@ -65,11 +66,12 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                BranchesInfoContent(
                   buildings = buildingMockList,
                   onBuildingCardClick = vm::animateToLocation,
+                  setCurrentlyDisplayedBuildings = vm::setCurrentlyDisplayedBuildings,
                   changeHeightOnCardClick = { bottomSheetHeight = screenHeight - screenHeight / 9 },
                   onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 },
                   onClientTypeChange = vm::changeClientType,
                   currentClientType = currentClientTypeState.value,
-                  currentClientFilters = currentClientFiltersState.value
+                  currentClientFilters = currentClientFiltersState
                )
             }
          }
@@ -94,7 +96,11 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                   imageVector = ImageVector.vectorResource(R.drawable.to_user),
                   contentDescription = null
                )
-               MapViewComposable(buildings = buildingMockList, atms = listOf() /*atmMockList*/, mv = mv)
+               MapViewComposable(
+                  buildings = currentlyDisplayedBuildingsState.value,
+                  atms = listOf() /*atmMockList*/,
+                  updateMarkers = vm::updateMarkers
+               )
             }
             else { Splash() }
          }

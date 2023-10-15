@@ -1,6 +1,7 @@
-package ru.zavodchane.moretech.presentation.map.filtering
+package ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,18 +23,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.zavodchane.moretech.data.FilterCheckboxTypes
 import ru.zavodchane.moretech.presentation.VTBBranchDisplayViewModel
-import ru.zavodchane.moretech.ui.theme.ProcessCyan
-import ru.zavodchane.moretech.ui.theme.ProcessCyan20
+import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 
 @Composable
-fun Filters() {
+fun Filters(onFilterUpdate : () -> Unit) {
    Column(
       modifier = Modifier
          .clip(shape = RoundedCornerShape(10.dp))
+         .border(
+            1.dp,
+            defaultVTBColor,
+            shape = RoundedCornerShape(10.dp)
+         )
    ) {
       var isFiltersOpen by remember { mutableStateOf(false) }
       Row(
@@ -41,25 +47,26 @@ fun Filters() {
          verticalAlignment = Alignment.CenterVertically,
          modifier = Modifier
             .fillMaxWidth()
-            .background(ProcessCyan)
+            .background(color = defaultVTBColor)
             .padding(8.dp)
             .clickable(onClick = { isFiltersOpen = !isFiltersOpen })
       ) {
          Text(
             text = "Фильтры",
-            color = ProcessCyan20
+//            style = Typography.titleLarge,
+            color = Color.White
          )
          if (!isFiltersOpen) {
             Icon(
                imageVector = Icons.Rounded.KeyboardArrowDown,
                contentDescription = "Open filters",
-               tint = ProcessCyan20
+               tint = Color.White
             )
          } else {
             Icon(
                imageVector = Icons.Rounded.KeyboardArrowUp,
                contentDescription = "Close filters",
-               tint = ProcessCyan20
+               tint = Color.White
             )
          }
       }
@@ -68,15 +75,13 @@ fun Filters() {
          Column(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-               .background(ProcessCyan)
-               .padding(10.dp)
+            modifier = Modifier.padding(10.dp)
          ) {
             val viewModel = viewModel<VTBBranchDisplayViewModel>()
             val clientFilters = viewModel.clientFilters.collectAsState().value
 
             Column(horizontalAlignment = Alignment.Start) {
-               FilterCheckbox(
+               FilterSwitch(
                   text = "РКО",
                   isChecked = clientFilters.rko,
                   onCheckedChange = {
@@ -86,7 +91,7 @@ fun Filters() {
                      )
                   }
                )
-               FilterCheckbox(
+               FilterSwitch(
                   text = "Подходит для инвалидов",
                   isChecked = clientFilters.hasRamp,
                   onCheckedChange = {
@@ -96,7 +101,7 @@ fun Filters() {
                      )
                   }
                )
-               FilterCheckbox(
+               FilterSwitch(
                   text = "Аренда ячеек",
                   isChecked = clientFilters.depositBoxes,
                   onCheckedChange = {
@@ -106,7 +111,7 @@ fun Filters() {
                      )
                   }
                )
-               FilterCheckbox(
+               FilterSwitch(
                   text = "Депозит в рублях",
                   isChecked = clientFilters.depositInRubles,
                   onCheckedChange = {
@@ -116,7 +121,7 @@ fun Filters() {
                      )
                   }
                )
-               FilterCheckbox(
+               FilterSwitch(
                   text = "Валютный депозит",
                   isChecked = clientFilters.depositInForeignCurrency,
                   onCheckedChange = {
@@ -126,7 +131,7 @@ fun Filters() {
                      )
                   }
                )
-               FilterCheckbox(
+               FilterSwitch(
                   text = "Депозит в драг. металлах",
                   isChecked = clientFilters.depositInPreciousMetals,
                   onCheckedChange = {
@@ -136,7 +141,7 @@ fun Filters() {
                      )
                   }
                )
-               FilterCheckbox(
+               FilterSwitch(
                   text = "Операции с драг. металлами",
                   isChecked = clientFilters.operationsWithPreciousMetals,
                   onCheckedChange = {
@@ -146,6 +151,7 @@ fun Filters() {
                      )
                   }
                )
+               onFilterUpdate()
             }
          }
       }
