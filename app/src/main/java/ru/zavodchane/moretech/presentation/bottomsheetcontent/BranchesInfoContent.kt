@@ -176,14 +176,16 @@ fun BranchesInfoContent(
             if (displayedBuilding != null) {
                Row(
                   modifier = Modifier.fillMaxWidth(),
-                  horizontalArrangement = Arrangement.End
+                  horizontalArrangement = Arrangement.End,
+                   verticalAlignment = Alignment.Top
                ) {
                   IconButton(onClick = {
                      displayBuildingInfo=false
                      displayedBuilding=null
                      onBuildingInfoDismiss()
                   }) {
-                     Icon(imageVector = Icons.Rounded.Close, contentDescription = null)
+                     Icon(imageVector = Icons.Rounded.Close, contentDescription = null,
+                         modifier = Modifier.size(50.dp))
                   }
                }
                Text(text = displayedBuilding!!.address)
