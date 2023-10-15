@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -18,37 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import ru.zavodchane.moretech.ui.theme.Pantone228C20
-import ru.zavodchane.moretech.ui.theme.ProcessCyan
-import ru.zavodchane.moretech.ui.theme.ProcessCyan20
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
-
-@Composable
-fun FilterCheckbox(
-   text: String,
-   modifier: Modifier = Modifier,
-   onCheckedChange: (Boolean) -> Unit,
-   isChecked: Boolean = false
-) {
-   Row(
-      horizontalArrangement = Arrangement.SpaceBetween,
-      verticalAlignment = Alignment.CenterVertically,
-      modifier = modifier
-         .fillMaxWidth()
-         .height(36.dp)
-         .clickable(onClick = {
-            onCheckedChange(isChecked)
-         })
-   ) {
-      Text(text = text, color = ProcessCyan20)
-      Checkbox(
-         checked = isChecked, onCheckedChange = null, colors = CheckboxDefaults.colors(
-            checkedColor = ProcessCyan,
-            checkmarkColor = ProcessCyan20,
-            uncheckedColor = ProcessCyan
-         )
-      )
-   }
-}
 
 @Composable
 fun FilterSwitch(
