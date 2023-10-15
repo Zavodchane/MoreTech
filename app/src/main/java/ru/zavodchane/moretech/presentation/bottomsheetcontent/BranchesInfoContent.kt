@@ -47,6 +47,8 @@ import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.VTBBuilding
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering.FiltersGrouped
+import ru.zavodchane.moretech.ui.theme.CoolGrey10
+import ru.zavodchane.moretech.ui.theme.CoolGrey8
 import ru.zavodchane.moretech.ui.theme.Pantone228C20
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 import kotlin.math.roundToInt
@@ -145,14 +147,16 @@ fun BranchesInfoContent(
                                )
                                Text(
                                    text = "${building.metroStation.joinToString(separator = ", ")}",
-                                   modifier = Modifier.padding(start = 12.dp)
+                                   modifier = Modifier.padding(start = 12.dp),
+                                   color = CoolGrey10
                                )
                            }
 
                        }
                        Text(
                            text = "${(building.workload_online * 100).roundToInt()}%",
-                           modifier = Modifier.padding(start = 12.dp))
+                           modifier = Modifier.padding(start = 12.dp),
+                           color = CoolGrey10 )
                    }
                    Column (modifier = Modifier.
                        fillMaxWidth(),
@@ -188,7 +192,9 @@ fun BranchesInfoContent(
                          modifier = Modifier.size(50.dp))
                   }
                }
-               Text(text = displayedBuilding!!.address)
+               Text(text = displayedBuilding!!.address,
+                   modifier = Modifier.padding(start = 12.dp),
+                   color = CoolGrey10)
             }
          }
       }
