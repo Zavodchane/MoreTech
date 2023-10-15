@@ -121,7 +121,7 @@ fun BranchesInfoContent(
                      modifier = Modifier.padding(start = 12.dp)
                   )
                   Text(
-                     text = "${building.distance} м.",
+                     text = "${building.distance} м",
                      modifier = Modifier.padding(end = 12.dp),
                      color = Color.White
                   )
