@@ -40,7 +40,7 @@ data class VTBBuilding(
     }
 
     fun getActualNormalizedWorkload() : Double {
-        return getActualNonNormalizedWorkload() - (minNonNormWorkload )/ (maxNonNormWorkload - minNonNormWorkload)
+        return (getActualNonNormalizedWorkload() - minNonNormWorkload) / (maxNonNormWorkload - minNonNormWorkload)
     }
 
     fun getDistanceToUser() : Double {

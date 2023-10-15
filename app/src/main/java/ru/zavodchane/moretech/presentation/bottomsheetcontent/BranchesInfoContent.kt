@@ -1,5 +1,8 @@
 package ru.zavodchane.moretech.presentation.bottomsheetcontent
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,8 +42,10 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -51,6 +57,7 @@ import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.VTBBuilding
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering.FiltersDialog
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
+import kotlin.math.roundToInt
 
 @Composable
 fun BranchesInfoContent(
@@ -152,24 +159,71 @@ fun BranchesInfoContent(
                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                Row(
-                  modifier = Modifier.background(defaultVTBColor)
+                  modifier = Modifier
+                     .fillMaxWidth()
+                     .background(defaultVTBColor),
+                  horizontalArrangement = Arrangement.SpaceBetween,
+                  verticalAlignment = Alignment.CenterVertically
                ) {
                   Text(
                      text = building.address,
-                     color = Color.White
+                     color = Color.White,
+                     modifier = Modifier.padding(start = 12.dp)
                   )
+//                  Text(
+//                     text = "${building.getDistanceToUser()} м",
+//                     modifier = Modifier.padding(end = 12.dp),
+//                     color = Color.White
+//                  )
                }
-               Column(
-                  modifier = Modifier.clickable(interactionSource, null) {
-                     onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
-                     changeHeightOnCardClick()
-                     displayBuildingInfo = true
-                     displayedBuilding = building
+               Row {
+                  Column(
+                     modifier = Modifier.clickable(interactionSource, null) {
+                        onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
+                        changeHeightOnCardClick()
+                        displayBuildingInfo = true
+                        displayedBuilding = building
+                     }
+                  ) {
+                     if (building.metroStation != null) {
+                        Row {
+                           Image(
+                              painter = painterResource(id = R.drawable.metro),
+                              contentDescription = null,
+                              modifier = Modifier
+                                 .size(20.dp)
+                           )
+                           Text(
+                              text = "${building.metroStation}",
+                              modifier = Modifier.padding(start = 12.dp)
+                           )
+                        }
+
+                     }
+                     Text(
+                        text = "${(building.getActualNormalizedWorkload() * 100).roundToInt()}%",
+                        modifier = Modifier.padding(start = 12.dp))
                   }
-               ) {
-                  Text(text = building.address)
-                  if (building.metroStation != null) {
-                     Text(text = building.metroStation)
+                  Column (modifier = Modifier.
+                  fillMaxWidth(),
+                     horizontalAlignment = Alignment.End,
+                     verticalArrangement = Arrangement.SpaceBetween
+
+                  ){
+                     val activity = LocalContext.current as Activity
+                     Image(
+                        painter = painterResource(id = R.drawable.marshrut),
+                        contentDescription = null,
+                        modifier = Modifier
+                           .size(50.dp)
+                           .clickable {
+                              val mapsIntent = Intent(
+                                 Intent.ACTION_VIEW,
+                                 Uri.parse("https://www.google.com/maps/search/?api=1&query=${building.latitude}%2C${building.longitude}")
+                              )
+                              activity.startActivity(mapsIntent)
+                           }
+                     )
                   }
                }
             }
