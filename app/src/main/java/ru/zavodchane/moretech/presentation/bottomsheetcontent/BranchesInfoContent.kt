@@ -1,6 +1,8 @@
 package ru.zavodchane.moretech.presentation.bottomsheetcontent
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -9,8 +11,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -28,17 +32,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import org.osmdroid.util.GeoPoint
+import ru.zavodchane.moretech.R
 import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.VTBBuilding
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering.FiltersGrouped
+import ru.zavodchane.moretech.ui.theme.Pantone228C20
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
+import kotlin.math.roundToInt
 
 @Composable
 fun BranchesInfoContent(
@@ -61,17 +72,17 @@ fun BranchesInfoContent(
 
    LazyColumn(
       modifier = Modifier
-         .fillMaxSize()
-         .padding(horizontal = 10.dp)
+          .fillMaxSize()
+          .padding(horizontal = 10.dp)
    ) {
       if (!displayBuildingInfo) {
          item {
             BasicTextField(
                modifier = Modifier
-                  .fillMaxWidth()
-                  .padding(vertical = 5.dp)
-                  .background(Color.Gray, RoundedCornerShape(10.dp))
-                  .padding(10.dp),
+                   .fillMaxWidth()
+                   .padding(vertical = 5.dp)
+                   .background(Color.Gray, RoundedCornerShape(10.dp))
+                   .padding(10.dp),
                value = query,
                onValueChange = { query = it; queriedList = search(query, buildings, currentClientFilters.value); setCurrentlyDisplayedBuildings(queriedList) },
                singleLine = true,
@@ -88,35 +99,76 @@ fun BranchesInfoContent(
             val interactionSource = remember { MutableInteractionSource() }
             Card(
                modifier = Modifier
-                  .fillMaxWidth()
-                  .padding(vertical = 5.dp)
-                  .clickable(interactionSource, null) {
-                     onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
-                  },
+                   .fillMaxWidth()
+                   .padding(vertical = 5.dp)
+//                  .border(1.dp, defaultVTBColor, RoundedCornerShape(5.dp))
+                   .clickable(interactionSource, null) {
+                       onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
+                   },
                shape = RoundedCornerShape(5.dp),
                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                Row(
-                  modifier = Modifier.background(defaultVTBColor)
+                  modifier = Modifier
+                      .fillMaxWidth()
+                      .background(defaultVTBColor),
+                  horizontalArrangement = Arrangement.SpaceBetween,
+                  verticalAlignment = Alignment.CenterVertically
                ) {
                   Text(
                      text = building.address,
+                     color = Color.White,
+                     modifier = Modifier.padding(start = 12.dp)
+                  )
+                  Text(
+                     text = "${building.distance} м.",
+                     modifier = Modifier.padding(end = 12.dp),
                      color = Color.White
                   )
                }
-               Column(
-                  modifier = Modifier.clickable(interactionSource, null) {
-                     onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
-                     changeHeightOnCardClick()
-                     displayBuildingInfo = true
-                     displayedBuilding = building
-                  }
-               ) {
-                  Text(text = building.address)
-                  if (building.metroStation != null) {
-                     Text(text = building.metroStation.joinToString(separator = ", "))
-                  }
+               Row {
+                   Column(
+                       modifier = Modifier.clickable(interactionSource, null) {
+                           onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
+                           changeHeightOnCardClick()
+                           displayBuildingInfo = true
+                           displayedBuilding = building
+                       }
+                   ) {
+                       if (building.metroStation != null) {
+                           Row {
+                               Image(
+                                   painter = painterResource(id = R.drawable.metro),
+                                   contentDescription = null,
+                                   modifier = Modifier
+                                       .size(20.dp)
+                               )
+                               Text(
+                                   text = "${building.metroStation.joinToString(separator = ", ")}",
+                                   modifier = Modifier.padding(start = 12.dp)
+                               )
+                           }
+
+                       }
+                       Text(
+                           text = "${(building.workload_online * 100).roundToInt()}%",
+                           modifier = Modifier.padding(start = 12.dp))
+                   }
+                   Column (modifier = Modifier.
+                       fillMaxWidth(),
+                       horizontalAlignment = Alignment.End,
+                       verticalArrangement = Arrangement.SpaceBetween
+
+                   ){
+                       Image(
+                           painter = painterResource(id = R.drawable.marshrut),
+                           contentDescription = null,
+                           modifier = Modifier
+                               .size(50.dp)
+                       )
+                   }
                }
+
             }
          }
       } else {
