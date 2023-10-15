@@ -28,7 +28,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import ru.zavodchane.moretech.config.LOCATION_RETRIEVAL_INTERVAL
 import ru.zavodchane.moretech.config.RESOLUTION_REQUEST_CODE
-import ru.zavodchane.moretech.data.VTBBuilding
+import ru.zavodchane.moretech.data.vtbbuilding.VTBBuilding
 import ru.zavodchane.moretech.data.util.getBuildings
 import ru.zavodchane.moretech.data.util.getMaxMinWorkload
 import ru.zavodchane.moretech.presentation.VTBBranchDisplayApp

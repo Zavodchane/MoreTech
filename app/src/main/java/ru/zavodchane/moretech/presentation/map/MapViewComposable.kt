@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import ru.zavodchane.moretech.OSMMapView
 import ru.zavodchane.moretech.data.VTBATM
-import ru.zavodchane.moretech.data.VTBBuilding
+import ru.zavodchane.moretech.data.vtbbuilding.VTBBuilding
 import ru.zavodchane.moretech.presentation.map.mapview.addMarker
 import ru.zavodchane.moretech.presentation.map.mapview.addUserMarker
 import ru.zavodchane.moretech.presentation.map.mapview.setMapConfig

@@ -15,7 +15,7 @@ import ru.zavodchane.moretech.currentlyDisplayedMarkers
 import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.FilterCheckboxTypes
-import ru.zavodchane.moretech.data.VTBBuilding
+import ru.zavodchane.moretech.data.vtbbuilding.VTBBuilding
 
 class VTBBranchDisplayViewModel () : ViewModel() {
    private val _currentLocation = currentLocationFlow

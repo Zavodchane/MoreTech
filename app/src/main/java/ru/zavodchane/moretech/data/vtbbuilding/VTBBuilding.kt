@@ -1,8 +1,9 @@
-package ru.zavodchane.moretech.data
+package ru.zavodchane.moretech.data.vtbbuilding
 
 import org.osmdroid.util.GeoPoint
 import ru.zavodchane.moretech.config.AVG_SERVICE_TIME_MINS
 import ru.zavodchane.moretech.currentLocationFlow
+import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.maxNonNormWorkload
 import ru.zavodchane.moretech.minNonNormWorkload
 

@@ -8,7 +8,7 @@ import ru.zavodchane.moretech.R
 import ru.zavodchane.moretech.buildingRadiusMarkerClusterer
 import ru.zavodchane.moretech.currentlyDisplayedMarkers
 import ru.zavodchane.moretech.data.VTBATM
-import ru.zavodchane.moretech.data.VTBBuilding
+import ru.zavodchane.moretech.data.vtbbuilding.VTBBuilding
 
 fun MapView.addUserMarker(userMarker: Marker) {
    userMarker.apply {

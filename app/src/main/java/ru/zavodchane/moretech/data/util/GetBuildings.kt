@@ -3,8 +3,8 @@ package ru.zavodchane.moretech.data.util
 import android.content.Context
 import com.google.gson.Gson
 import ru.zavodchane.moretech.R
-import ru.zavodchane.moretech.data.VTBBuilding
-import ru.zavodchane.moretech.data.VTBBuildingActualList
+import ru.zavodchane.moretech.data.vtbbuilding.VTBBuilding
+import ru.zavodchane.moretech.data.vtbbuilding.VTBBuildingActualList
 import java.io.InputStreamReader
 
 fun getBuildings(ctx : Context): ArrayList<VTBBuilding> {

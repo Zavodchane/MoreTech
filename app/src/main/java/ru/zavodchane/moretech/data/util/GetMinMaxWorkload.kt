@@ -1,7 +1,7 @@
 package ru.zavodchane.moretech.data.util
 
 import android.util.Log
-import ru.zavodchane.moretech.data.VTBBuilding
+import ru.zavodchane.moretech.data.vtbbuilding.VTBBuilding
 import ru.zavodchane.moretech.maxNonNormWorkload
 import ru.zavodchane.moretech.minNonNormWorkload
 

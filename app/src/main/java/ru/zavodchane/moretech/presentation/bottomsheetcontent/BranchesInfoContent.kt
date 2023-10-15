@@ -54,7 +54,7 @@ import org.osmdroid.util.GeoPoint
 import ru.zavodchane.moretech.R
 import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
-import ru.zavodchane.moretech.data.VTBBuilding
+import ru.zavodchane.moretech.data.vtbbuilding.VTBBuilding
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering.FiltersDialog
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 import kotlin.math.roundToInt
