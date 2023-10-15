@@ -40,6 +40,7 @@ import ru.zavodchane.moretech.R
 import ru.zavodchane.moretech.data.FilterCheckboxType
 import ru.zavodchane.moretech.presentation.VTBBranchDisplayViewModel
 import ru.zavodchane.moretech.ui.theme.CoolGrey6
+import ru.zavodchane.moretech.ui.theme.Pantone228C20
 import ru.zavodchane.moretech.ui.theme.Pantone228C80
 import ru.zavodchane.moretech.ui.theme.ProcessCyan
 import ru.zavodchane.moretech.ui.theme.ProcessCyan20
@@ -302,7 +303,7 @@ fun FilterSwitch(
                 checkedThumbColor = Color.White,
                 checkedTrackColor = defaultVTBColor,
                 uncheckedThumbColor = Color.White,
-                uncheckedTrackColor = CoolGrey6,
+                uncheckedTrackColor = Pantone228C20,
             )
         )
 
