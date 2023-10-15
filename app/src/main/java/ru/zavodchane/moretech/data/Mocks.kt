@@ -178,7 +178,7 @@ val buildingMockList = listOf(
       koef_avg_time = 1.2f
    ),
    VTBBuilding(
-      salePointName = "ДО «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
+      salePointName = "xd «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
       address = "г. Солнечногорск, ул. Красная, д. 60",
       openHours = listOf(
          mapOf(
