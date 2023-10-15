@@ -6,6 +6,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import ru.zavodchane.moretech.R
 import ru.zavodchane.moretech.buildingRadiusMarkerClusterer
+import ru.zavodchane.moretech.currentlyDisplayedMarkers
 import ru.zavodchane.moretech.data.VTBATM
 import ru.zavodchane.moretech.data.VTBBuilding
 
@@ -32,6 +33,7 @@ fun MapView.addMarker(building : VTBBuilding) {
       this.id = building.salePointName
    }
 
+   currentlyDisplayedMarkers.add(buildingMarker)
    buildingRadiusMarkerClusterer.add(buildingMarker)
    invalidate()
 }

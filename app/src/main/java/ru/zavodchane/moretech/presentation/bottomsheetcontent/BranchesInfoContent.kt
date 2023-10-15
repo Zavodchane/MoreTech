@@ -43,6 +43,7 @@ import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 @Composable
 fun BranchesInfoContent(
    buildings : List<VTBBuilding>,
+   setCurrentlyDisplayedBuildings : (List<VTBBuilding>) -> Unit,
    onBuildingCardClick : (GeoPoint) -> Unit,
    changeHeightOnCardClick : () -> Unit,
    onBuildingInfoDismiss : () -> Unit,
@@ -72,7 +73,7 @@ fun BranchesInfoContent(
                   .background(Color.Gray, RoundedCornerShape(10.dp))
                   .padding(10.dp),
                value = query,
-               onValueChange = { query = it; queriedList = search(query, buildings, currentClientFilters.value) },
+               onValueChange = { query = it; queriedList = search(query, buildings, currentClientFilters.value); setCurrentlyDisplayedBuildings(queriedList) },
                singleLine = true,
                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                keyboardActions = KeyboardActions( onDone = { focusManager.clearFocus() } )
@@ -80,7 +81,7 @@ fun BranchesInfoContent(
             FiltersGrouped(
                onClientTypeChange = onClientTypeChange,
                currentClientType = currentClientType,
-               onFilterUpdate = { queriedList = search(query, buildings, currentClientFilters.value) }
+               onFilterUpdate = { queriedList = search(query, buildings, currentClientFilters.value); setCurrentlyDisplayedBuildings(queriedList) }
             )
          }
          items(queriedList) { building ->
