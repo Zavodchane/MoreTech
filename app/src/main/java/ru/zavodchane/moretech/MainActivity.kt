@@ -28,6 +28,9 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import ru.zavodchane.moretech.config.LOCATION_RETRIEVAL_INTERVAL
 import ru.zavodchane.moretech.config.RESOLUTION_REQUEST_CODE
+import ru.zavodchane.moretech.data.VTBBuilding
+import ru.zavodchane.moretech.data.util.getBuildings
+import ru.zavodchane.moretech.data.util.getMaxMinWorkload
 import ru.zavodchane.moretech.presentation.VTBBranchDisplayApp
 import ru.zavodchane.moretech.presentation.VTBBranchDisplayViewModel
 import ru.zavodchane.moretech.presentation.map.clustering.setupATMMarkerClusterer
@@ -45,11 +48,20 @@ var currentLocationFlow: MutableStateFlow<Location?> = MutableStateFlow(null)
 var locationInitialized = false
 var currentlyDisplayedMarkers = arrayListOf<Marker>()
 
+lateinit var actualBuildingList: List<VTBBuilding>
+
+var maxNonNormWorkload: Double = Double.MIN_VALUE
+var minNonNormWorkload: Double = Double.MAX_VALUE
+
 class MainActivity : ComponentActivity() {
    @SuppressLint("MissingPermission") // Запуск зависимой функции происходит только после проверки разрешений
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
 
+      actualBuildingList = getBuildings(this).toList()
+      Log.i("BuildingsList", "$actualBuildingList")
+      getMaxMinWorkload(actualBuildingList)
+      Log.i("WorkloadEdges", "Max: $maxNonNormWorkload, Min: $minNonNormWorkload")
       fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
       // MapView setup

@@ -30,8 +30,8 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import ru.zavodchane.moretech.OSMMapView
 import ru.zavodchane.moretech.R
+import ru.zavodchane.moretech.actualBuildingList
 import ru.zavodchane.moretech.currentLocationFlow
-import ru.zavodchane.moretech.data.buildingMockList
 import ru.zavodchane.moretech.locationInitialized
 import ru.zavodchane.moretech.presentation.bottomsheetcontent.BranchesInfoContent
 import ru.zavodchane.moretech.presentation.map.MapViewComposable
@@ -64,7 +64,7 @@ fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel, mv : MapView ) {
                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                BranchesInfoContent(
-                  buildings = buildingMockList,
+                  buildings = actualBuildingList,
                   onBuildingCardClick = vm::animateToLocation,
                   setCurrentlyDisplayedBuildings = vm::setCurrentlyDisplayedBuildings,
                   changeHeightOnCardClick = { bottomSheetHeight = screenHeight - screenHeight / 9 },

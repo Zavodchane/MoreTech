@@ -1,6 +1,8 @@
 package ru.zavodchane.moretech.presentation.bottomsheetcontent
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,16 +31,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import org.osmdroid.util.GeoPoint
+import ru.zavodchane.moretech.R
 import ru.zavodchane.moretech.data.ClientFilters
 import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.VTBBuilding
-import ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering.FiltersGrouped
+import ru.zavodchane.moretech.presentation.bottomsheetcontent.filtering.FiltersDialog
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 
 @Composable
@@ -66,23 +78,66 @@ fun BranchesInfoContent(
    ) {
       if (!displayBuildingInfo) {
          item {
-            BasicTextField(
-               modifier = Modifier
-                  .fillMaxWidth()
-                  .padding(vertical = 5.dp)
-                  .background(Color.Gray, RoundedCornerShape(10.dp))
-                  .padding(10.dp),
-               value = query,
-               onValueChange = { query = it; queriedList = search(query, buildings, currentClientFilters.value); setCurrentlyDisplayedBuildings(queriedList) },
-               singleLine = true,
-               keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-               keyboardActions = KeyboardActions( onDone = { focusManager.clearFocus() } )
-            )
-            FiltersGrouped(
-               onClientTypeChange = onClientTypeChange,
-               currentClientType = currentClientType,
-               onFilterUpdate = { queriedList = search(query, buildings, currentClientFilters.value); setCurrentlyDisplayedBuildings(queriedList) }
-            )
+            Row(
+               modifier = Modifier.fillMaxWidth(),
+               horizontalArrangement = Arrangement.SpaceEvenly,
+               verticalAlignment = Alignment.CenterVertically
+            ){
+               var textFieldSize by remember { mutableStateOf(Size.Zero) }
+               BasicTextField(
+                  modifier = Modifier
+                     .fillMaxWidth(0.8f)
+                     .padding(vertical = 5.dp)
+                     .clip(RoundedCornerShape(10.dp))
+                     .border(
+                        1.dp,
+                        defaultVTBColor,
+                        RoundedCornerShape(10.dp)
+                     )
+                     .padding(10.dp)
+                     .onGloballyPositioned { coordinates ->
+                        textFieldSize = coordinates.size.toSize()
+                     },
+                  value = query,
+                  onValueChange = {
+                     query = it;
+                     queriedList = search(query, buildings, currentClientFilters.value)
+                     setCurrentlyDisplayedBuildings(queriedList)
+                  },
+                  singleLine = true,
+                  keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                  keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+               )
+
+               val interactionSource = remember { MutableInteractionSource() }
+               var showFiltersDialog by remember { mutableStateOf(false) }
+               Image(
+                  modifier = Modifier
+                     .height(with(LocalDensity.current) { textFieldSize.height.toDp() + 20.dp })
+                     .background(defaultVTBColor, RoundedCornerShape(10.dp))
+                     .padding(5.dp)
+                     .clickable(interactionSource, null) {
+                        showFiltersDialog = true
+                     },
+                  imageVector = if (currentClientFilters.value == ClientFilters())
+                     ImageVector.vectorResource(R.drawable.filters_not_active) else ImageVector.vectorResource(R.drawable.filters_active),
+                  contentDescription = null
+               )
+               if (showFiltersDialog) {
+                  FiltersDialog(
+                     onFilterUpdate = {
+                        queriedList = search(query, buildings, currentClientFilters.value)
+                        setCurrentlyDisplayedBuildings(queriedList)
+                     },
+                     onDismissRequest = {showFiltersDialog = false}
+                  )
+               }
+            }
+//            FiltersGrouped(
+//               onClientTypeChange = onClientTypeChange,
+//               currentClientType = currentClientType,
+//               onFilterUpdate = { queriedList = search(query, buildings, currentClientFilters.value); setCurrentlyDisplayedBuildings(queriedList) }
+//            )
          }
          items(queriedList) { building ->
             val interactionSource = remember { MutableInteractionSource() }
@@ -114,7 +169,8 @@ fun BranchesInfoContent(
                ) {
                   Text(text = building.address)
                   if (building.metroStation != null) {
-                     Text(text = building.metroStation.joinToString(separator = ", "))
+//                     Text(text = building.metroStation.joinToString(separator = ", "))
+                     Text(text = building.metroStation)
                   }
                }
             }

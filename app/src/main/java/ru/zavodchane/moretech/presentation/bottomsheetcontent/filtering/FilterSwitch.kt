@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import ru.zavodchane.moretech.ui.theme.Pantone228C20
+import ru.zavodchane.moretech.ui.theme.Typography
 import ru.zavodchane.moretech.ui.theme.defaultVTBColor
 
 @Composable
@@ -36,7 +37,7 @@ fun FilterSwitch(
             onCheckedChange(isChecked)
          }
    ) {
-      Text(text = text, /*style = Typography.bodyLarge,*/ color = Color.Black)
+      Text(text = text, style = Typography.bodyMedium, color = Color.Black)
 
       Switch(
          checked = isChecked,
