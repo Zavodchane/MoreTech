@@ -78,172 +78,185 @@ fun BranchesInfoContent(
 
    val focusManager = LocalFocusManager.current
 
-   LazyColumn(
-      modifier = Modifier
-         .fillMaxSize()
-         .padding(horizontal = 10.dp)
-   ) {
+   Column(modifier = Modifier.fillMaxWidth()) {
       if (!displayBuildingInfo) {
-         item {
-            Row(
-               modifier = Modifier.fillMaxWidth(),
-               horizontalArrangement = Arrangement.SpaceEvenly,
-               verticalAlignment = Alignment.CenterVertically
-            ){
-               var textFieldSize by remember { mutableStateOf(Size.Zero) }
-               BasicTextField(
-                  modifier = Modifier
-                     .fillMaxWidth(0.8f)
-                     .padding(vertical = 5.dp)
-                     .clip(RoundedCornerShape(10.dp))
-                     .border(
-                        1.dp,
-                        defaultVTBColor,
-                        RoundedCornerShape(10.dp)
-                     )
-                     .padding(10.dp)
-                     .onGloballyPositioned { coordinates ->
-                        textFieldSize = coordinates.size.toSize()
-                     },
-                  value = query,
-                  onValueChange = { queryVal ->
-                     query = queryVal
-                     queriedList = search(query, buildings, currentClientFilters.value).sortedBy { it.getDistanceToUser() }
+         Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+         ) {
+            var textFieldSize by remember { mutableStateOf(Size.Zero) }
+            BasicTextField(
+               modifier = Modifier
+                  .fillMaxWidth(0.8f)
+                  .padding(vertical = 5.dp)
+                  .clip(RoundedCornerShape(10.dp))
+                  .border(
+                     1.dp,
+                     defaultVTBColor,
+                     RoundedCornerShape(10.dp)
+                  )
+                  .padding(10.dp)
+                  .onGloballyPositioned { coordinates ->
+                     textFieldSize = coordinates.size.toSize()
+                  },
+               value = query,
+               onValueChange = { queryVal ->
+                  query = queryVal
+                  queriedList = search(
+                     query,
+                     buildings,
+                     currentClientFilters.value
+                  ).sortedBy { it.getDistanceToUser() }
+                  setCurrentlyDisplayedBuildings(queriedList)
+               },
+               singleLine = true,
+               keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+               keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+            )
+
+            val interactionSource = remember { MutableInteractionSource() }
+            var showFiltersDialog by remember { mutableStateOf(false) }
+            Image(
+               modifier = Modifier
+                  .height(with(LocalDensity.current) { textFieldSize.height.toDp() + 20.dp })
+                  .background(defaultVTBColor, RoundedCornerShape(10.dp))
+                  .padding(5.dp)
+                  .clickable(interactionSource, null) {
+                     showFiltersDialog = true
+                  },
+               imageVector = if (currentClientFilters.value == ClientFilters())
+                  ImageVector.vectorResource(R.drawable.filters_not_active) else ImageVector.vectorResource(
+                  R.drawable.filters_active
+               ),
+               contentDescription = null
+            )
+            if (showFiltersDialog) {
+               FiltersDialog(
+                  onClientTypeChange = onClientTypeChange,
+                  currentClientType = currentClientType,
+                  onFilterUpdate = {
+                     queriedList = search(
+                        query,
+                        buildings,
+                        currentClientFilters.value
+                     ).sortedBy { it.getDistanceToUser() }
                      setCurrentlyDisplayedBuildings(queriedList)
                   },
-                  singleLine = true,
-                  keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                  keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+                  onDismissRequest = { showFiltersDialog = false }
                )
-
-               val interactionSource = remember { MutableInteractionSource() }
-               var showFiltersDialog by remember { mutableStateOf(false) }
-               Image(
-                  modifier = Modifier
-                     .height(with(LocalDensity.current) { textFieldSize.height.toDp() + 20.dp })
-                     .background(defaultVTBColor, RoundedCornerShape(10.dp))
-                     .padding(5.dp)
-                     .clickable(interactionSource, null) {
-                        showFiltersDialog = true
-                     },
-                  imageVector = if (currentClientFilters.value == ClientFilters())
-                     ImageVector.vectorResource(R.drawable.filters_not_active) else ImageVector.vectorResource(R.drawable.filters_active),
-                  contentDescription = null
-               )
-               if (showFiltersDialog) {
-                  FiltersDialog(
-                     onFilterUpdate = {
-                        queriedList = search(query, buildings, currentClientFilters.value).sortedBy { it.getDistanceToUser() }
-                        setCurrentlyDisplayedBuildings(queriedList)
-                     },
-                     onDismissRequest = {showFiltersDialog = false}
-                  )
-               }
             }
+         }
+      }
+      LazyColumn(
+         modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 10.dp)
+      ) {
+         if (!displayBuildingInfo) {
+//            item {
+
 //            FiltersGrouped(
 //               onClientTypeChange = onClientTypeChange,
 //               currentClientType = currentClientType,
 //               onFilterUpdate = { queriedList = search(query, buildings, currentClientFilters.value); setCurrentlyDisplayedBuildings(queriedList) }
 //            )
-         }
-         items(queriedList) { building ->
-            val interactionSource = remember { MutableInteractionSource() }
-            Card(
-               modifier = Modifier
-                  .fillMaxWidth()
-                  .padding(vertical = 5.dp)
-                  .clickable(interactionSource, null) {
-                     onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
-                  },
-               shape = RoundedCornerShape(5.dp),
-               colors = CardDefaults.cardColors(containerColor = Color.White)
-            ) {
-               Row(
+//            }
+            items(queriedList) { building ->
+               val interactionSource = remember { MutableInteractionSource() }
+               Card(
                   modifier = Modifier
                      .fillMaxWidth()
-                     .background(defaultVTBColor),
-                  horizontalArrangement = Arrangement.SpaceBetween,
-                  verticalAlignment = Alignment.CenterVertically
-               ) {
-                  Text(
-                     text = building.address,
-                     color = Color.White,
-                     modifier = Modifier.padding(start = 12.dp)
-                  )
-//                  Text(
-//                     text = "${building.getDistanceToUser()} м",
-//                     modifier = Modifier.padding(end = 12.dp),
-//                     color = Color.White
-//                  )
-               }
-               Row {
-                  Column(
-                     modifier = Modifier.clickable(interactionSource, null) {
+                     .padding(vertical = 5.dp)
+                     .clickable(interactionSource, null) {
                         onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
-                        changeHeightOnCardClick()
-                        displayBuildingInfo = true
-                        displayedBuilding = building
-                     }
+                     },
+                  shape = RoundedCornerShape(5.dp),
+                  colors = CardDefaults.cardColors(containerColor = Color.White)
+               ) {
+                  Row(
+                     modifier = Modifier
+                        .fillMaxWidth()
+                        .background(defaultVTBColor),
+                     horizontalArrangement = Arrangement.SpaceBetween,
+                     verticalAlignment = Alignment.CenterVertically
                   ) {
-                     if (building.metroStation != null) {
-                        Row {
-                           Image(
-                              painter = painterResource(id = R.drawable.metro),
-                              contentDescription = null,
-                              modifier = Modifier
-                                 .size(20.dp)
-                           )
-                           Text(
-                              text = "${building.metroStation}",
-                              modifier = Modifier.padding(start = 12.dp)
-                           )
-                        }
-
-                     }
                      Text(
-                        text = "${(building.getActualNormalizedWorkload() * 100).roundToInt()}%",
-                        modifier = Modifier.padding(start = 12.dp))
-                  }
-                  Column (modifier = Modifier.
-                  fillMaxWidth(),
-                     horizontalAlignment = Alignment.End,
-                     verticalArrangement = Arrangement.SpaceBetween
-
-                  ){
-                     val activity = LocalContext.current as Activity
-                     Image(
-                        painter = painterResource(id = R.drawable.marshrut),
-                        contentDescription = null,
-                        modifier = Modifier
-                           .size(50.dp)
-                           .clickable {
-                              val mapsIntent = Intent(
-                                 Intent.ACTION_VIEW,
-                                 Uri.parse("https://www.google.com/maps/search/?api=1&query=${building.latitude}%2C${building.longitude}")
-                              )
-                              activity.startActivity(mapsIntent)
-                           }
+                        text = building.address,
+                        color = Color.White,
+                        modifier = Modifier.padding(start = 12.dp)
                      )
+                  }
+                  Row {
+                     Column(
+                        modifier = Modifier.clickable(interactionSource, null) {
+                           onBuildingCardClick(GeoPoint(building.latitude, building.longitude))
+                           changeHeightOnCardClick()
+                           displayBuildingInfo = true
+                           displayedBuilding = building
+                        }
+                     ) {
+                        if (building.metroStation != null) {
+                           Row {
+                              Image(
+                                 painter = painterResource(id = R.drawable.metro),
+                                 contentDescription = null,
+                                 modifier = Modifier
+                                    .size(20.dp)
+                              )
+                              Text(
+                                 text = "${building.metroStation}",
+                                 modifier = Modifier.padding(start = 12.dp)
+                              )
+                           }
+
+                        }
+                        Text(
+                           text = "${(building.getActualNormalizedWorkload() * 100).roundToInt()}%",
+                           modifier = Modifier.padding(start = 12.dp)
+                        )
+                     }
+                     Column(
+                        modifier = Modifier
+                           .fillMaxWidth(),
+                        horizontalAlignment = Alignment.End,
+                        verticalArrangement = Arrangement.SpaceBetween
+                     ) {
+                        val activity = LocalContext.current as Activity
+                        Image(
+                           painter = painterResource(id = R.drawable.marshrut),
+                           contentDescription = null,
+                           modifier = Modifier
+                              .size(50.dp)
+                              .clickable {
+                                 val mapsIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.google.com/maps/search/?api=1&query=${building.latitude}%2C${building.longitude}")
+                                 )
+                                 activity.startActivity(mapsIntent)
+                              }
+                        )
+                     }
                   }
                }
             }
-         }
-      } else {
-         item {
-            if (displayedBuilding != null) {
-               Row(
-                  modifier = Modifier.fillMaxWidth(),
-                  horizontalArrangement = Arrangement.End
-               ) {
-                  IconButton(onClick = {
-                     displayBuildingInfo=false
-                     displayedBuilding=null
-                     onBuildingInfoDismiss()
-                  }) {
-                     Icon(imageVector = Icons.Rounded.Close, contentDescription = null)
+         } else {
+            item {
+               if (displayedBuilding != null) {
+                  Row(
+                     modifier = Modifier.fillMaxWidth(),
+                     horizontalArrangement = Arrangement.End
+                  ) {
+                     IconButton(onClick = {
+                        displayBuildingInfo = false
+                        displayedBuilding = null
+                        onBuildingInfoDismiss()
+                     }) {
+                        Icon(imageVector = Icons.Rounded.Close, contentDescription = null)
+                     }
                   }
+                  Text(text = displayedBuilding!!.address)
                }
-               Text(text = displayedBuilding!!.address)
             }
          }
       }

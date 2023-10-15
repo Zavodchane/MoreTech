@@ -21,14 +21,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import ru.zavodchane.moretech.data.ClientType
 import ru.zavodchane.moretech.data.FilterCheckboxTypes
 import ru.zavodchane.moretech.presentation.VTBBranchDisplayViewModel
 import ru.zavodchane.moretech.ui.theme.Typography
 
 @Composable
 fun FiltersDialog(
-//   onClientTypeChange : (ClientType) -> Unit,
-//   currentClientType : ClientType,
+   onClientTypeChange : (ClientType) -> Unit,
+   currentClientType : ClientType,
    onFilterUpdate : () -> Unit,
    onDismissRequest : () -> Unit
 ) {
@@ -70,6 +71,7 @@ fun FiltersDialog(
             }
 
             Column {
+               ClientTypeFilter(onClientTypeChange = onClientTypeChange, currentClientType = currentClientType)
                FilterSwitch(
                   text = "РКО",
                   isChecked = clientFilters.rko,
