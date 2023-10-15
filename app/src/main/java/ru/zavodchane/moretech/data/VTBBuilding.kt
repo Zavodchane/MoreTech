@@ -1,6 +1,8 @@
 package ru.zavodchane.moretech.data
 
+import org.osmdroid.util.GeoPoint
 import ru.zavodchane.moretech.config.AVG_SERVICE_TIME_MINS
+import ru.zavodchane.moretech.currentLocationFlow
 import ru.zavodchane.moretech.maxNonNormWorkload
 import ru.zavodchane.moretech.minNonNormWorkload
 
@@ -39,6 +41,12 @@ data class VTBBuilding(
 
     fun getActualNormalizedWorkload() : Double {
         return getActualNonNormalizedWorkload() - (minNonNormWorkload )/ (maxNonNormWorkload - minNonNormWorkload)
+    }
+
+    fun getDistanceToUser() : Double {
+        val approxCurrentUserLocation = GeoPoint(currentLocationFlow.value)
+        val buildingGeoPoint = GeoPoint(latitude, longitude)
+        return approxCurrentUserLocation.distanceToAsDouble(buildingGeoPoint)
     }
 
     fun isMatchingSearchQuery(query: String, filters: ClientFilters) : Boolean {
