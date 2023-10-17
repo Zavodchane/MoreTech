@@ -1,89 +1,103 @@
 package ru.zavodchane.moretech.presentation
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
-import org.osmdroid.views.MapView
-import ru.zavodchane.moretech.data.VTBBuilding
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import kotlinx.coroutines.flow.asStateFlow
+import org.osmdroid.util.GeoPoint
+import ru.zavodchane.moretech.OSMMapView
+import ru.zavodchane.moretech.R
+import ru.zavodchane.moretech.actualBuildingList
+import ru.zavodchane.moretech.currentLocationFlow
+import ru.zavodchane.moretech.presentation.bottomsheetcontent.BranchesInfoContent
+import ru.zavodchane.moretech.presentation.map.MapViewComposable
+import ru.zavodchane.moretech.presentation.map.mapview.moveMapToUser
+import ru.zavodchane.moretech.ui.theme.MoreTechTheme
 
-val mockList = listOf(
-   VTBBuilding(
-      salePointName = "ДО «Солнечногорский» Филиала № 7701 Банка ВТБ (ПАО)",
-      address = "141506, Московская область, г. Солнечногорск, ул. Красная, д. 60",
-      status = "открытая",
-      openHours = listOf(
-         mapOf(
-            "days" to "пн",
-            "hours" to "09:00-18:00"
-         ),
-         mapOf(
-            "days" to "вт",
-            "hours" to "09:00-18:00"
-         ),
-         mapOf(
-            "days" to "ср",
-            "hours" to "09:00-18:00"
-         ),
-         mapOf(
-            "days" to "чт",
-            "hours" to "09:00-18:00"
-         ),
-         mapOf(
-            "days" to "пт",
-            "hours" to "09:00-18:00"
-         ),
-         mapOf(
-            "days" to "сб",
-            "hours" to "выходной"
-         ),
-         mapOf(
-            "days" to "вс",
-            "hours" to "выходной"
-         ),
-      ),
-      rko = "есть РКО",
-      openHoursIndividual = listOf(
-         mapOf(
-            "days" to "пн",
-            "hours" to "09:00-20:00"
-         ),
-         mapOf(
-            "days" to "вт",
-            "hours" to "09:00-20:00"
-         ),
-         mapOf(
-            "days" to "ср",
-            "hours" to "09:00-20:00"
-         ),
-         mapOf(
-            "days" to "чт",
-            "hours" to "09:00-20:00"
-         ),
-         mapOf(
-            "days" to "пт",
-            "hours" to "09:00-20:00"
-         ),
-         mapOf(
-            "days" to "сб",
-            "hours" to "10:00-17:00"
-         ),
-         mapOf(
-            "days" to "вс",
-            "hours" to "выходной"
-         ),
-      ),
-      officeType = "Да (Зона Привилегия)",
-      salePointFormat = "Универсальный",
-      suoAvailability = "Y",
-      hasRamp = "N",
-      latitude = 55.762936,
-      longitude = 37.628845,
-      metroStation = null,
-      distance = 62105,
-      kep = true,
-      myBranch = false,
-   )
-)
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VTBBranchDisplayApp( mv : MapView ) {
-   MapViewComposable(places = mockList, mv = mv)
+fun VTBBranchDisplayApp( vm : VTBBranchDisplayViewModel) {
+   MoreTechTheme {
+      val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+      val configuration = LocalConfiguration.current
+      val screenHeight = configuration.screenHeightDp.dp
+      var bottomSheetHeight by remember { mutableStateOf(screenHeight / 2) }
+      val currentClientTypeState = vm.clientType.collectAsState()
+      val currentClientFiltersState = vm.clientFilters.collectAsState()
+      val currentlyDisplayedBuildingsState = vm.currentlyDisplayedBuildings.collectAsState()
+
+      val sheetPeekHeight = 50.dp
+      BottomSheetScaffold(
+         sheetPeekHeight = sheetPeekHeight,
+         scaffoldState = bottomSheetScaffoldState,
+         sheetContent = {
+            Column(
+               modifier = Modifier
+                  .height(bottomSheetHeight)
+                  .fillMaxWidth(),
+               verticalArrangement = Arrangement.Top,
+               horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+               BranchesInfoContent(
+                  buildings = actualBuildingList,
+                  onBuildingCardClick = vm::animateToLocation,
+                  setCurrentlyDisplayedBuildings = vm::setCurrentlyDisplayedBuildings,
+                  changeHeightOnCardClick = { bottomSheetHeight = screenHeight - screenHeight / 9 },
+                  onBuildingInfoDismiss = { bottomSheetHeight = screenHeight / 2 },
+                  onClientTypeChange = vm::changeClientType,
+                  currentClientType = currentClientTypeState.value,
+                  currentClientFilters = currentClientFiltersState,
+               )
+            }
+         }
+      ) {
+         Box {
+            val currentUserLocationState = currentLocationFlow.asStateFlow().collectAsState()
+            val currentUserGeoPoint = currentUserLocationState.value?.let { currentUserLocation ->
+               GeoPoint(currentUserLocation.latitude, currentUserLocation.longitude)
+            }
+            val interactionSource = remember { MutableInteractionSource() }
+            Image(
+               modifier = Modifier
+                  .zIndex(10f)
+                  .align(Alignment.BottomEnd)
+                  .clickable(interactionSource, null) {
+                     if (currentUserGeoPoint != null) {
+                        OSMMapView.moveMapToUser(currentUserGeoPoint)
+                     }
+                  }
+                  .padding(bottom = sheetPeekHeight + 10.dp, end = 10.dp),
+               imageVector = ImageVector.vectorResource(R.drawable.to_user),
+               contentDescription = null
+            )
+            MapViewComposable(
+               buildings = currentlyDisplayedBuildingsState.value,
+               atms = listOf() /*atmMockList*/,
+               updateMarkers = vm::updateMarkers
+            )
+         }
+      }
+   }
 }
